@@ -1,0 +1,8 @@
+{
+    "symbol_url": "http://at.alicdn.com/t/c/font_3921774_mh90nodyhbc.js",
+    "use_typescript": true,
+    "save_dir": "./src/assets/iconfont",
+    "trim_icon_prefix": "",
+    "default_icon_size": 18,
+    "local_svgs": ".src/assets/svgs"
+}

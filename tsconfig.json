@@ -1,0 +1,20 @@
+{
+  /* Recommended React Native TSConfig base */
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  // https://www.typescriptlang.org/tsconfig 详细配置
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@c/*": ["components/*"],
+      "@p/*": ["pages/*"],
+      "@n/*": ["navigator/*"],
+      "@u/*": ["utils/*"],
+      "@m/*": ["models/*"],
+      "@conf/*": ["config/*"],
+      "@t/*": ["types/*"],
+      "@assets/*": ["assets/*"]
+    }
+  }
+
+}
