@@ -12,6 +12,7 @@ module.exports = {
           '@u': './src/utils',
           '@m': './src/models',
           '@conf': './src/config',
+          '@cons': './src/constants',
           '@t': './src/types',
           '@assets': './src/assets',
         },

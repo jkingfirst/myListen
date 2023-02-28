@@ -4,5 +4,8 @@ export type RootStackParamsList = Record<StackPage, undefined>;
 export type RootStackNavigation =
   NativeStackNavigationProp<RootStackParamsList>;
 
-type BottomTabsPage = 'Index' | 'Listen' | 'Found' | 'Account';
+type BottomTabsPage = 'TopTabs' | 'Listen' | 'Found' | 'Account';
 export type BottomTabsParamsList = Record<BottomTabsPage, undefined>;
+
+type TopTabsPage = 'Index';
+export type TopTabsParamsList = Record<TopTabsPage, undefined>;

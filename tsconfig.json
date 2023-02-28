@@ -6,12 +6,13 @@
     "skipLibCheck": true,
     "baseUrl": "./src",
     "paths": {
-      "@c/*": ["components/*"],
+      "@comp/*": ["components/*"],
       "@p/*": ["pages/*"],
       "@n/*": ["navigator/*"],
       "@u/*": ["utils/*"],
       "@m/*": ["models/*"],
       "@conf/*": ["config/*"],
+      "@cons/*": ["constants/*"],
       "@t/*": ["types/*"],
       "@assets/*": ["assets/*"]
     }

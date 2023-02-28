@@ -13,7 +13,7 @@ export { default as IconShouye } from './IconShouye';
 export { default as IconWodeWode } from './IconWodeWode';
 export { default as IconFaxian } from './IconFaxian';
 
-export type IconNames = 'icon-shoucangxuanzhong' | 'icon-shouye' | 'icon-wode-wode' | 'icon-faxian';
+export type IconNames = 'icon-listen' | 'icon-home' | 'icon-account' | 'icon-found';
 
 interface Props extends GProps, ViewProps {
   name: IconNames;
@@ -23,13 +23,13 @@ interface Props extends GProps, ViewProps {
 
 let IconFont: FunctionComponent<Props> = ({ name, ...rest }) => {
   switch (name) {
-    case 'icon-shoucangxuanzhong':
+    case 'icon-listen':
       return <IconShoucangxuanzhong key="1" {...rest} />;
-    case 'icon-shouye':
+    case 'icon-home':
       return <IconShouye key="2" {...rest} />;
-    case 'icon-wode-wode':
+    case 'icon-account':
       return <IconWodeWode key="3" {...rest} />;
-    case 'icon-faxian':
+    case 'icon-found':
       return <IconFaxian key="4" {...rest} />;
   }
 
