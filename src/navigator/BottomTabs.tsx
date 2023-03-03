@@ -3,7 +3,7 @@ import {Listen, Found, Account} from '@p/index';
 import TopTabs from '@n/TopTabs';
 import {BottomTabsParamsList} from '@t/navigation';
 import IconFont from '@assets/iconfont';
-import COLORS from '@cons/colors';
+import colors from '@const/colors';
 const Tabs = createBottomTabNavigator<BottomTabsParamsList>();
 export default function BottomTabs() {
   return (
@@ -11,7 +11,7 @@ export default function BottomTabs() {
       initialRouteName="TopTabs"
       screenOptions={{
         headerTitleAlign: 'center',
-        tabBarActiveTintColor: COLORS.primary,
+        tabBarActiveTintColor: colors.primary,
       }}>
       <Tabs.Screen
         name={'TopTabs'}

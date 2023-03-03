@@ -6,13 +6,14 @@
     "skipLibCheck": true,
     "baseUrl": "./src",
     "paths": {
+      "@api/*": ["api/*"],
       "@comp/*": ["components/*"],
       "@p/*": ["pages/*"],
       "@n/*": ["navigator/*"],
       "@u/*": ["utils/*"],
       "@m/*": ["models/*"],
       "@conf/*": ["config/*"],
-      "@cons/*": ["constants/*"],
+      "@const/*": ["customConstants/*"],
       "@t/*": ["types/*"],
       "@assets/*": ["assets/*"]
     }

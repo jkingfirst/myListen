@@ -4,7 +4,7 @@ import {Detail} from '@p/index';
 import BottomTabs from '@n/BottomTabs';
 import {RootStackParamsList} from '@t/navigation';
 const Stack = createNativeStackNavigator<RootStackParamsList>();
-export default function App() {
+export default function RootStack() {
   return (
     <NavigationContainer>
       <Stack.Navigator
