@@ -1,20 +1,8 @@
 import {Effect, Model} from 'dva-core-ts';
 import {Reducer} from 'redux';
 import {getCarouselsList} from '@api/home';
-import axios from 'axios';
-interface Carousel {
-  id: number;
-  image: string;
-  colors: [string, string];
-}
-export interface ResponseGenerator {
-  config?: any;
-  data?: any;
-  headers?: any;
-  request?: any;
-  status?: number;
-  statusText?: string;
-}
+import {Carousel, ResponseGenerator} from '@t/home';
+
 interface homeModel extends Model {
   namespace: 'home';
   state: {
@@ -42,9 +30,14 @@ const home: homeModel = {
     },
   },
   effects: {
-    *fetchCarousel(_, {call}) {
-      let data: ResponseGenerator = yield call(getCarouselsList);
-      console.log(data, '&&&&&&');
+    *fetchCarousel(_, {call, put}) {
+      let {data}: ResponseGenerator = yield call(getCarouselsList);
+      yield put({
+        type: 'setState',
+        payload: {
+          carousels: data,
+        },
+      });
     },
   },
 };
