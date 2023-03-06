@@ -1,29 +1,50 @@
 import {Effect, Model} from 'dva-core-ts';
 import {Reducer} from 'redux';
+import {getCarouselsList} from '@api/home';
+import axios from 'axios';
+interface Carousel {
+  id: number;
+  image: string;
+  colors: [string, string];
+}
+export interface ResponseGenerator {
+  config?: any;
+  data?: any;
+  headers?: any;
+  request?: any;
+  status?: number;
+  statusText?: string;
+}
 interface homeModel extends Model {
   namespace: 'home';
   state: {
-    num: number;
+    carousels: Carousel[];
   };
   reducers?: {
     // 同步动作，
-    add: Reducer<homeModel['state']>;
+    setState: Reducer<homeModel['state']>;
   };
-  effect?: {
-    addAsync: Effect;
+  effects?: {
+    fetchCarousel: Effect;
   };
 }
 const home: homeModel = {
   namespace: 'home',
   state: {
-    num: 0,
+    carousels: [],
   },
   reducers: {
-    add(state = {num: 0}, {payload}) {
+    setState(state = {carousels: []}, {payload}) {
       return {
         ...state,
-        num: state.num + payload.num,
+        ...payload,
       };
+    },
+  },
+  effects: {
+    *fetchCarousel(_, {call}) {
+      let data: ResponseGenerator = yield call(getCarouselsList);
+      console.log(data, '&&&&&&');
     },
   },
 };

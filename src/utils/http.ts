@@ -1,30 +1,39 @@
-import axios, {AxiosRequestConfig, AxiosResponse, AxiosInstance} from 'axios';
 import Config from 'react-native-config';
-type Conf = {[key: string]: unknown};
+import axios, {AxiosRequestConfig, AxiosInstance} from 'axios';
 export interface RequestConfig extends AxiosRequestConfig {
-  headers: any;
+  mock?: boolean; // 是否模拟
 }
+export type DataType = {[key: string]: string};
 const ICODE = '00310DF430F5B9BB';
+const headerToken = {
+  icode: ICODE,
+};
 class Http {
-  defaultSetting: Conf;
-  constructor() {
+  settings: RequestConfig;
+  defaultSetting: RequestConfig;
+  constructor(options: RequestConfig) {
     this.defaultSetting = {
-      baseUrl: Config.API_URL,
+      baseURL: Config.API_URL,
       timeout: 10000,
     };
+    this.settings = {...this.defaultSetting, ...options};
   }
   create(options: RequestConfig): AxiosInstance {
-    let conf = {...this.defaultSetting, ...options};
+    let conf = {...this.settings, ...options};
     conf.headers = options.headers
-      ? options.headers
+      ? {
+          ...options.headers,
+          ...headerToken,
+        }
       : {
-          icode: ICODE,
+          ...headerToken,
         };
     return axios.create(conf);
   }
   interceptors(instance: AxiosInstance): void {
     instance.interceptors.request.use(
-      function (config: RequestConfig) {
+      function (config) {
+        console.log(config.baseURL, '_________');
         return config;
       },
       function (err) {
@@ -32,26 +41,26 @@ class Http {
       },
     );
     instance.interceptors.response.use(
-      function (res: AxiosResponse) {
+      function (res) {
         return res.data;
       },
       function (err) {
+        console.log(err.toString(), '++++++');
         return Promise.reject(err);
       },
     );
   }
-
-  get(url: string, data: unknown, options: RequestConfig) {
-    let conf = {url: url, params: data, method: 'GET', ...options};
+  get(url: string, data?: DataType, options?: RequestConfig) {
+    let conf = {url: url, params: data ? data : {}, method: 'GET', ...options};
     let instance = this.create(conf);
     this.interceptors(instance);
-    return instance(options);
+    return instance(conf);
   }
-  post(url: string, data: unknown, options: RequestConfig) {
-    let conf = {url: url, data: data, method: 'POST', ...options};
+  post(url: string, data?: DataType, options?: RequestConfig) {
+    let conf = {url: url, data: data ? data : {}, method: 'POST', ...options};
     let instance = this.create(conf);
     this.interceptors(instance);
-    return instance(options);
+    return instance(conf);
   }
 }
 export default Http;
