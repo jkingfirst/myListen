@@ -3,7 +3,8 @@ import {View} from 'react-native';
 import {RootStackNavigation} from '@t/navigation';
 import {ConnectedProps, connect} from 'react-redux';
 import {RootState} from '@m/index';
-import Carousel from './components/Carousels';
+import Carousel from '@p/BottomTabs/Home/components/Carousels';
+import Guesses from '@p/BottomTabs/Home/components/Guesses';
 const mapStateToProps = ({home}: RootState) => ({
   carousels: home.carousels,
 });
@@ -23,6 +24,7 @@ function Home(props: HomeProps) {
   return (
     <View>
       <Carousel data={carousels} />
+      <Guesses />
     </View>
   );
 }

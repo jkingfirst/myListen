@@ -11,3 +11,8 @@ export interface ResponseGenerator {
   status?: number;
   statusText?: string;
 }
+export interface Guess {
+  id: string;
+  title: string;
+  image: string;
+}
