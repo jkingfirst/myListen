@@ -16,3 +16,11 @@ export interface Guess {
   title: string;
   image: string;
 }
+export interface IChannel {
+  id: string;
+  title: string;
+  image: string;
+  remark: string;
+  played: number;
+  playing: number;
+}

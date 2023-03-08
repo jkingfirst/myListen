@@ -7,7 +7,7 @@
     "baseUrl": "./src",
     "paths": {
       "@api/*": ["api/*"],
-      "@comp/*": ["components/*"],
+      "@c/*": ["components/*"],
       "@p/*": ["pages/*"],
       "@n/*": ["navigator/*"],
       "@u/*": ["utils/*"],

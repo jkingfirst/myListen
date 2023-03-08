@@ -11,7 +11,7 @@ interface Props extends GProps, ViewProps {
   color?: string | string[];
 }
 
-let IconShouye: FunctionComponent<Props> = ({ size, color, ...rest }) => {
+let IconHome: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1030 1024" width={size} height={size} {...rest}>
       <Path
@@ -22,10 +22,10 @@ let IconShouye: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   );
 };
 
-IconShouye.defaultProps = {
+IconHome.defaultProps = {
   size: 18,
 };
 
-IconShouye = React.memo ? React.memo(IconShouye) : IconShouye;
+IconHome = React.memo ? React.memo(IconHome) : IconHome;
 
-export default IconShouye;
+export default IconHome;

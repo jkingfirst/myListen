@@ -4,16 +4,22 @@
 import React, { FunctionComponent } from 'react';
 import { ViewProps } from 'react-native';
 import { GProps } from 'react-native-svg';
-import IconShoucangxuanzhong from './IconShoucangxuanzhong';
-import IconShouye from './IconShouye';
-import IconWodeWode from './IconWodeWode';
-import IconFaxian from './IconFaxian';
-export { default as IconShoucangxuanzhong } from './IconShoucangxuanzhong';
-export { default as IconShouye } from './IconShouye';
-export { default as IconWodeWode } from './IconWodeWode';
-export { default as IconFaxian } from './IconFaxian';
+import IconMore from './IconMore';
+import IconRefresh from './IconRefresh';
+import IconFavorite from './IconFavorite';
+import IconListen from './IconListen';
+import IconHome from './IconHome';
+import IconAccount from './IconAccount';
+import IconFound from './IconFound';
+export { default as IconMore } from './IconMore';
+export { default as IconRefresh } from './IconRefresh';
+export { default as IconFavorite } from './IconFavorite';
+export { default as IconListen } from './IconListen';
+export { default as IconHome } from './IconHome';
+export { default as IconAccount } from './IconAccount';
+export { default as IconFound } from './IconFound';
 
-export type IconNames = 'icon-listen' | 'icon-home' | 'icon-account' | 'icon-found';
+export type IconNames = 'icon-more' | 'icon-refresh' | 'icon-favorite' | 'icon-listen' | 'icon-home' | 'icon-account' | 'icon-found';
 
 interface Props extends GProps, ViewProps {
   name: IconNames;
@@ -23,14 +29,20 @@ interface Props extends GProps, ViewProps {
 
 let IconFont: FunctionComponent<Props> = ({ name, ...rest }) => {
   switch (name) {
+    case 'icon-more':
+      return <IconMore key="1" {...rest} />;
+    case 'icon-refresh':
+      return <IconRefresh key="2" {...rest} />;
+    case 'icon-favorite':
+      return <IconFavorite key="3" {...rest} />;
     case 'icon-listen':
-      return <IconShoucangxuanzhong key="1" {...rest} />;
+      return <IconListen key="4" {...rest} />;
     case 'icon-home':
-      return <IconShouye key="2" {...rest} />;
+      return <IconHome key="5" {...rest} />;
     case 'icon-account':
-      return <IconWodeWode key="3" {...rest} />;
+      return <IconAccount key="6" {...rest} />;
     case 'icon-found':
-      return <IconFaxian key="4" {...rest} />;
+      return <IconFound key="7" {...rest} />;
   }
 
   return null;
