@@ -24,3 +24,8 @@ export interface IChannel {
   played: number;
   playing: number;
 }
+export interface IPagination {
+  current: number;
+  total: number;
+  hasMore: boolean;
+}

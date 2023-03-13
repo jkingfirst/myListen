@@ -6,15 +6,19 @@ import SnapCarousel, {
 import {Carousel} from '@t/home';
 import {viewWidth, getScreenSize} from '@u/tools';
 import {View, StyleSheet} from 'react-native';
-import {useState} from 'react';
-interface CarouselProps {
-  data: Carousel[];
-}
+import {connect, ConnectedProps} from 'react-redux';
+import {RootState} from '@m/index';
+const mapStateToProps = ({home}: RootState) => ({
+  carousels: home.carousels,
+  activeCarouselsIndex: home.activeCarouselsIndex,
+});
+interface CarouselsProps extends ConnectedProps<typeof connector> {}
+const connector = connect(mapStateToProps);
 let sliderWidth = viewWidth;
 let itemWidth = getScreenSize(90, 'width');
-let itemHeight = getScreenSize(26, 'height');
-export default function Carousels({data}: CarouselProps) {
-  const [activeDotIndex, setActiveDotIndex] = useState(0);
+export let itemHeight = getScreenSize(26, 'height');
+const Carousels = (props: CarouselsProps) => {
+  const {activeCarouselsIndex: activeDotIndex, carousels, dispatch} = props;
   const renderPagination = () => {
     return (
       <View style={styles.pagWrapper}>
@@ -22,14 +26,19 @@ export default function Carousels({data}: CarouselProps) {
           containerStyle={styles.pagContainer}
           dotContainerStyle={styles.dotContainer}
           dotStyle={styles.dotStyle}
-          dotsLength={data.length}
+          dotsLength={carousels.length}
           activeDotIndex={activeDotIndex}
         />
       </View>
     );
   };
   const onSnapToItem = (index: number) => {
-    setActiveDotIndex(index);
+    dispatch({
+      type: 'home/setState',
+      payload: {
+        activeCarouselsIndex: index,
+      },
+    });
   };
   const renderItem = (
     {item}: {item: Carousel},
@@ -50,7 +59,7 @@ export default function Carousels({data}: CarouselProps) {
   };
   return (
     <SnapCarousel
-      data={data}
+      data={carousels}
       onSnapToItem={onSnapToItem}
       renderItem={renderItem}
       sliderWidth={sliderWidth}
@@ -59,7 +68,8 @@ export default function Carousels({data}: CarouselProps) {
       autoplay={true}
     />
   );
-}
+};
+export default connector(Carousels);
 const styles = StyleSheet.create({
   imageContainer: {
     width: itemWidth,

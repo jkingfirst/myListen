@@ -9,4 +9,9 @@ const getScreenSize = (percent: number, type: ScreenType = 'width'): number => {
     return Math.round((viewHeight * percent) / 100);
   }
 };
-export {viewWidth, viewHeight, getScreenSize};
+const cbMidWare = <T>(cb: (params?: T) => {}, params?: T) => {
+  if (Object.prototype.toString.call(cb) === '[object Function]') {
+    cb(params);
+  }
+};
+export {viewWidth, viewHeight, getScreenSize, cbMidWare};

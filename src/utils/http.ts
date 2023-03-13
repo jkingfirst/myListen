@@ -3,7 +3,7 @@ import axios, {AxiosRequestConfig, AxiosInstance} from 'axios';
 export interface RequestConfig extends AxiosRequestConfig {
   mock?: boolean; // 是否模拟
 }
-export type DataType = {[key: string]: string};
+export type DataType = {[key: string]: any};
 const ICODE = '00310DF430F5B9BB';
 const headerToken = {
   icode: ICODE,
@@ -14,7 +14,7 @@ class Http {
   constructor(options: RequestConfig) {
     this.defaultSetting = {
       baseURL: Config.API_URL,
-      timeout: 10000,
+      timeout: 30000,
     };
     this.settings = {...this.defaultSetting, ...options};
   }

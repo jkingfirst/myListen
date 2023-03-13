@@ -1,14 +1,25 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Listen, Found, Account} from '@p/index';
 import TopTabs from '@n/TopTabs';
-import {BottomTabsParamsList} from '@t/navigation';
+import {BottomTabsParamsList, RootStackNavigation} from '@t/navigation';
 import IconFont from '@assets/iconfont';
 import colors from '@const/colors';
+import {useMount} from '@u/customHooks';
 const Tabs = createBottomTabNavigator<BottomTabsParamsList>();
-export default function BottomTabs() {
+interface BottomProps {
+  navigation: RootStackNavigation;
+}
+export default function BottomTabs(props: BottomProps) {
+  const {navigation} = props;
+  useMount(() => {
+    navigation.setOptions({
+      headerTransparent: true,
+      title: 'helle',
+    });
+  });
   return (
     <Tabs.Navigator
-      initialRouteName="TopTabs"
+      initialRouteName={'TopTabs'}
       screenOptions={{
         headerTitleAlign: 'center',
         tabBarActiveTintColor: colors.primary,
@@ -18,13 +29,14 @@ export default function BottomTabs() {
         component={TopTabs}
         options={{
           title: '首页',
+          headerShown: false,
           tabBarIcon: ({color}) => (
             <IconFont name={'icon-home'} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name={'Listen'}
+        name={'listen'}
         component={Listen}
         options={{
           title: '我听',
@@ -34,7 +46,7 @@ export default function BottomTabs() {
         }}
       />
       <Tabs.Screen
-        name={'Found'}
+        name={'found'}
         component={Found}
         options={{
           title: '发现',
@@ -44,7 +56,7 @@ export default function BottomTabs() {
         }}
       />
       <Tabs.Screen
-        name={'Account'}
+        name={'account'}
         component={Account}
         options={{
           title: '我的',

@@ -3162,6 +3162,13 @@ dva-core-ts@^2.0.7:
     redux-saga "^0.16.0"
     warning "^3.0.0"
 
+dva-loading-ts@^3.0.23:
+  version "3.0.23"
+  resolved "https://registry.yarnpkg.com/dva-loading-ts/-/dva-loading-ts-3.0.23.tgz#2859c0e6be6cbb11f028831f003fb3c8456b6a2a"
+  integrity sha512-+WyVm7OyAC0aUBdy7tPb7upyTJnJ4lyA1yCj2F5FYQ0KolI2KXSnk8tx8OVr38bFmXcns184pt9FE37Puq+J7A==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
@@ -6376,6 +6383,11 @@ react-native-iconfont-cli@^2.2.4:
     minimist "^1.2.5"
     mkdirp "^0.5.1"
     tslib "^1.10.0"
+
+react-native-linear-gradient@^2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.6.2.tgz#56598a76832724b2afa7889747635b5c80948f38"
+  integrity sha512-Z8Xxvupsex+9BBFoSYS87bilNPWcRfRsGC0cpJk72Nxb5p2nEkGSBv73xZbEHnW2mUFvP+huYxrVvjZkr/gRjQ==
 
 react-native-pager-view@^6.1.4:
   version "6.1.4"
