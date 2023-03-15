@@ -1,6 +1,6 @@
 import {
-  MaterialTopTabBar,
   MaterialTopTabBarProps,
+  MaterialTopTabBar,
 } from '@react-navigation/material-top-tabs';
 import {StyleSheet, View, Text} from 'react-native';
 import {SafeAreaInsetsContext} from 'react-native-safe-area-context';
@@ -18,15 +18,20 @@ type modelState = ConnectedProps<typeof connector>;
 type CProps = MaterialTopTabBarProps & modelState;
 
 const CustomTobBar = (props: CProps) => {
-  const {carousels, activeCarouselsIndex, gradientVisible} = props;
-  const colors =
+  const {carousels, activeCarouselsIndex, gradientVisible, ...restProps} =
+    props;
+  const colorsArr =
     carousels.length > 0
       ? carousels[activeCarouselsIndex].colors
       : ['#333', '#999'];
+  let textStyle = styles.textGradientInvisible;
+  if (gradientVisible) {
+    textStyle = styles.textGradientVisible;
+  }
   const getLinearCom = () => {
     if (gradientVisible) {
       return (
-        <LinearGradient colors={colors} style={styles.gradientContainer} />
+        <LinearGradient colors={colorsArr} style={styles.gradientContainer} />
       );
     }
     return null;
@@ -34,22 +39,22 @@ const CustomTobBar = (props: CProps) => {
   return (
     <SafeAreaInsetsContext.Consumer>
       {insets => (
-        <View style={{paddingTop: insets?.top, backgroundColor: '#fff'}}>
+        <View style={{paddingTop: insets?.top, backgroundColor: 'transparent'}}>
           {getLinearCom()}
           <View style={styles.topBarView}>
             <View style={styles.tobBar}>
-              <MaterialTopTabBar {...props} />
+              <MaterialTopTabBar {...restProps} />
             </View>
             <Touchable style={styles.category}>
-              <Text>分类</Text>
+              <Text style={textStyle}>分类</Text>
             </Touchable>
           </View>
           <View style={styles.bottom}>
             <Touchable style={styles.searchBtn}>
-              <Text>搜索</Text>
+              <Text style={textStyle}>搜索</Text>
             </Touchable>
             <Touchable style={styles.historyBtn}>
-              <Text>历史记录</Text>
+              <Text style={textStyle}>历史记录</Text>
             </Touchable>
           </View>
         </View>
@@ -98,5 +103,11 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: '#fff',
+  },
+  textGradientVisible: {
+    color: '#fff',
+  },
+  textGradientInvisible: {
+    color: '#333',
   },
 });

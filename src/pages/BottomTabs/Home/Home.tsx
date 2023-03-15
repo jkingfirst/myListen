@@ -96,7 +96,6 @@ function Home(props: HomeProps) {
   const onScroll = ({nativeEvent}: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = nativeEvent.contentOffset.y;
     const newGradientVisible = itemHeight > offsetY;
-    console.log(offsetY, itemHeight, '^^^^^^^^');
     if (gradientVisible !== newGradientVisible) {
       dispatch({
         type: 'home/setState',

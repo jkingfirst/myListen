@@ -16,7 +16,8 @@
       "@const/*": ["customConstants/*"],
       "@t/*": ["types/*"],
       "@assets/*": ["assets/*"]
-    }
+    },
+    "experimentalDecorators": true
   }
 
 }
