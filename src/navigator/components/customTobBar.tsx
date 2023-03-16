@@ -18,8 +18,13 @@ type modelState = ConnectedProps<typeof connector>;
 type CProps = MaterialTopTabBarProps & modelState;
 
 const CustomTobBar = (props: CProps) => {
-  const {carousels, activeCarouselsIndex, gradientVisible, ...restProps} =
-    props;
+  const {
+    carousels,
+    activeCarouselsIndex,
+    gradientVisible,
+    navigation,
+    ...restProps
+  } = props;
   const colorsArr =
     carousels.length > 0
       ? carousels[activeCarouselsIndex].colors
@@ -36,6 +41,9 @@ const CustomTobBar = (props: CProps) => {
     }
     return null;
   };
+  const handleToPress = () => {
+    navigation.navigate('Category');
+  };
   return (
     <SafeAreaInsetsContext.Consumer>
       {insets => (
@@ -43,9 +51,9 @@ const CustomTobBar = (props: CProps) => {
           {getLinearCom()}
           <View style={styles.topBarView}>
             <View style={styles.tobBar}>
-              <MaterialTopTabBar {...restProps} />
+              <MaterialTopTabBar {...restProps} navigation={navigation} />
             </View>
-            <Touchable style={styles.category}>
+            <Touchable style={styles.category} onPress={handleToPress}>
               <Text style={textStyle}>分类</Text>
             </Touchable>
           </View>

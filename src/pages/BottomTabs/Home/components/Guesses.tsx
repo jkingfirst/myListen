@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   flatWrapper: {
-    margin: 16,
+    padding: 16,
     backgroundColor: '#fff',
   },
   item: {

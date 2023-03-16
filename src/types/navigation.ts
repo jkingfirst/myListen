@@ -1,6 +1,6 @@
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Routes} from '@const/routes';
-type StackPage = 'BottomTabs' | 'Detail';
+type StackPage = 'BottomTabs' | 'Detail' | 'Category';
 export type RootStackParamsList = Record<StackPage, undefined>;
 export type RootStackNavigation =
   NativeStackNavigationProp<RootStackParamsList>;

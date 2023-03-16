@@ -33,7 +33,6 @@ class Http {
   interceptors(instance: AxiosInstance): void {
     instance.interceptors.request.use(
       function (config) {
-        console.log(config.baseURL, '_________');
         return config;
       },
       function (err) {

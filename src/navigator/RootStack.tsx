@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Detail} from '@p/index';
 import BottomTabs from '@n/BottomTabs';
 import {RootStackParamsList} from '@t/navigation';
+import Category from '@p/Category/Category';
 const Stack = createNativeStackNavigator<RootStackParamsList>();
 export default function RootStack() {
   return (
@@ -29,6 +30,13 @@ export default function RootStack() {
           }}
           name="Detail"
           component={Detail}
+        />
+        <Stack.Screen
+          name={'Category'}
+          component={Category}
+          options={{
+            headerTitle: '分类',
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
