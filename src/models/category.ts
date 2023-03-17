@@ -31,7 +31,7 @@ const categoryModel: CategoryModel = {
   namespace: 'category',
   state: initState,
   reducers: {
-    setState(state: IState = initState, {type, payload}) {
+    setState(state: IState = initState, {payload}) {
       return {
         ...state,
         ...payload,
