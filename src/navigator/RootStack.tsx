@@ -13,6 +13,8 @@ export default function RootStack() {
           headerTitleAlign: 'center',
           gestureEnabled: true,
           animation: 'slide_from_right',
+          headerBackVisible: true,
+          headerTintColor: '#333',
         }}>
         <Stack.Screen
           options={{

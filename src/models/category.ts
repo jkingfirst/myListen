@@ -4,7 +4,9 @@ import {Effect, Model, SubscriptionsMapObject} from 'dva-core-ts';
 import storage, {load} from '@conf/storage';
 import {ResponseGenerator} from '@t/home';
 import {getCategoryList} from '@api/category';
+import {RootState} from '@m/index';
 interface IState {
+  isEdit: boolean;
   myCategories: ICategory[];
   allCategories: ICategory[];
 }
@@ -21,6 +23,7 @@ interface CategoryModel extends Model {
   subscriptions: SubscriptionsMapObject; //订阅一个数据源，根据需要dispatch对应的action, 一般在dva app.start（）时候调用
 }
 const initState: IState = {
+  isEdit: false,
   myCategories: [
     {name: '推荐', id: 'home'},
     {name: 'VIP', id: 'vip'},
@@ -65,7 +68,18 @@ const categoryModel: CategoryModel = {
         });
       }
     },
-    *toggleEdit() {},
+    *toggleEdit(_, {put, select}) {
+      const category: IState = yield select(
+        ({category}: RootState) => category,
+      );
+
+      yield put({
+        type: 'setState',
+        payload: {
+          isEdit: !category.isEdit,
+        },
+      });
+    },
   },
   subscriptions: {
     setup({dispatch}) {
@@ -75,10 +89,6 @@ const categoryModel: CategoryModel = {
       // 在storage.ts中的storage对象的sync添加方法
       storage.sync.allCategories = async () => {
         let {data} = await getCategoryList();
-        storage.save({
-          key: 'allCategories',
-          data: data,
-        });
         return data;
       };
       storage.sync.myCategories = async () => {
