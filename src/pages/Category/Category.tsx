@@ -1,15 +1,14 @@
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Button} from 'react-native';
 import Touchable from '@c/TouchableOpacity';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '@m/index';
 import {ICategory} from '@t/category';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import _ from 'lodash';
 import CategoryItem from '@p/Category/components/CategoryItem';
 import {RootStackNavigation} from '@t/navigation';
 import {useMount} from '@u/customHooks';
 import HeaderRight from '@p/Category/components/components/HeaderRight';
-
 const mapStateToProps = ({category}: RootState) => ({
   isEdit: category.isEdit,
   myCategories: category.myCategories,
@@ -24,12 +23,26 @@ const Category = (props: CategoryProps) => {
   const {myCategories, allCategories, navigation, dispatch, isEdit} = props;
   const [pageMyCategories, setPageMyCategories] = useState(myCategories);
   const [pageAllCategories, setPageAllCategories] = useState(allCategories);
-  let categoryGroups = _.groupBy(pageAllCategories, item => item.classify);
-  useMount(() => {
-    navigation.setOptions({
-      headerRight: () => <HeaderRight handleBtn={handleBtn} />,
-    });
 
+  const assembleAllCategories = pageAllCategories
+    .map(allCategoryItem => {
+      if (pageMyCategories.every(item => item.id !== allCategoryItem.id)) {
+        return allCategoryItem;
+      }
+    })
+    .filter(item => item !== undefined);
+  console.log(assembleAllCategories, '🚀');
+  let categoryGroups = _.groupBy(assembleAllCategories, item => item.classify);
+  // 保存
+  const handleBtn = () => {
+    dispatch({
+      type: 'category/toggleEdit',
+      payload: {
+        myCategories: pageMyCategories,
+      },
+    });
+  };
+  useMount(() => {
     dispatch({
       type: 'category/setState',
       payload: {
@@ -37,14 +50,13 @@ const Category = (props: CategoryProps) => {
       },
     });
   });
-  const handleBtn = () => {
-    dispatch({
-      type: 'category/toggleEdit',
-      payload: {
-        myCategories,
-      },
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <HeaderRight handleBtn={handleBtn} />,
     });
-  };
+  }, [navigation, handleBtn]);
+  useEffect(() => {}, [pageMyCategories]);
+  // 长按编辑
   const handleEdit = (item: ICategory) => {
     if (item.id === 'vip' || item.id === 'home') {
       return false;
@@ -56,6 +68,7 @@ const Category = (props: CategoryProps) => {
       },
     });
   };
+  // 增删
   const handleSelect = (item: ICategory) => {
     if (!isEdit || item.id === 'vip' || item.id === 'home') {
       return false;
@@ -64,16 +77,20 @@ const Category = (props: CategoryProps) => {
       const idx = pageMyCategories.findIndex(
         (classify: ICategory) => item.id === classify.id,
       );
-      pageMyCategories.splice(idx, 1);
-      setPageAllCategories([item, ...pageAllCategories]);
-      setPageMyCategories(pageMyCategories);
+      setPageAllCategories(pre => [item, ...pre]);
+      setPageMyCategories(pre => {
+        pre.splice(idx, 1);
+        return pre;
+      });
     } else {
       const idx = pageAllCategories.findIndex(
         (classify: ICategory) => item.id === classify.id,
       );
-      pageAllCategories.splice(idx, 1);
-      setPageMyCategories([...pageMyCategories, item]);
-      setPageAllCategories(pageAllCategories);
+      setPageMyCategories(pre => [...pre, item]);
+      setPageAllCategories(pre => {
+        pre.splice(idx, 1);
+        return pre;
+      });
     }
   };
   const renderItem = (item: ICategory) => {
@@ -100,7 +117,6 @@ const Category = (props: CategoryProps) => {
       </View>
       <View>
         {Object.keys(categoryGroups).map(item => {
-          console.log(item, 'key');
           return (
             <View key={item}>
               <Text style={styles.classifyName}>{item}</Text>

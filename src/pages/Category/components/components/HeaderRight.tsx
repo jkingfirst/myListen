@@ -10,6 +10,7 @@ interface IProp extends modelState {
   handleBtn: () => void;
 }
 const HeaderRight = function (props: IProp) {
+  console.log('hello');
   const {isEdit} = props;
   return (
     <HeaderButtons>

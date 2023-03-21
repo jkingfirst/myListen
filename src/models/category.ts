@@ -68,17 +68,25 @@ const categoryModel: CategoryModel = {
         });
       }
     },
-    *toggleEdit(_, {put, select}) {
+    *toggleEdit({payload}, {put, select}) {
       const category: IState = yield select(
         ({category}: RootState) => category,
       );
-
+      const {myCategories} = payload;
+      console.log(myCategories, '++++++++');
       yield put({
         type: 'setState',
         payload: {
+          myCategories: myCategories,
           isEdit: !category.isEdit,
         },
       });
+      if (category.isEdit) {
+        storage.save({
+          key: 'myCategories',
+          data: myCategories,
+        });
+      }
     },
   },
   subscriptions: {
