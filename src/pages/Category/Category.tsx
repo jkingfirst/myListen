@@ -1,9 +1,9 @@
-import {View, Text, StyleSheet, ScrollView, Button} from 'react-native';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import Touchable from '@c/TouchableOpacity';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '@m/index';
 import {ICategory} from '@t/category';
-import {useCallback, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import _ from 'lodash';
 import CategoryItem from '@p/Category/components/CategoryItem';
 import {RootStackNavigation} from '@t/navigation';
@@ -22,18 +22,21 @@ const connector = connect(mapStateToProps);
 const Category = (props: CategoryProps) => {
   const {myCategories, allCategories, navigation, dispatch, isEdit} = props;
   const [pageMyCategories, setPageMyCategories] = useState(myCategories);
-  const [pageAllCategories, setPageAllCategories] = useState(allCategories);
 
-  const assembleAllCategories = pageAllCategories
+  const assembleAllCategories = allCategories
     .map(allCategoryItem => {
       if (pageMyCategories.every(item => item.id !== allCategoryItem.id)) {
         return allCategoryItem;
       }
     })
     .filter(item => item !== undefined);
-  console.log(assembleAllCategories, '🚀');
-  let categoryGroups = _.groupBy(assembleAllCategories, item => item.classify);
+  let categoryGroups =
+    _.groupBy(
+      assembleAllCategories,
+      (item: ICategory) => item.classify || '',
+    ) || [];
   // 保存
+  // eslint-disable-next-line
   const handleBtn = () => {
     dispatch({
       type: 'category/toggleEdit',
@@ -77,20 +80,12 @@ const Category = (props: CategoryProps) => {
       const idx = pageMyCategories.findIndex(
         (classify: ICategory) => item.id === classify.id,
       );
-      setPageAllCategories(pre => [item, ...pre]);
       setPageMyCategories(pre => {
         pre.splice(idx, 1);
         return pre;
       });
     } else {
-      const idx = pageAllCategories.findIndex(
-        (classify: ICategory) => item.id === classify.id,
-      );
       setPageMyCategories(pre => [...pre, item]);
-      setPageAllCategories(pre => {
-        pre.splice(idx, 1);
-        return pre;
-      });
     }
   };
   const renderItem = (item: ICategory) => {

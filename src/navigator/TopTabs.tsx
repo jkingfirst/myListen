@@ -9,14 +9,16 @@ import CustomTobBar from '@n/components/customTobBar';
 import {StyleSheet} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '@m/index';
-const mapStateToProps = ({home}: RootState) => ({
+import {ICategory} from '@t/category';
+const mapStateToProps = ({home, category}: RootState) => ({
   gradientVisible: home.gradientVisible,
+  myCategories: category.myCategories,
 });
 const connector = connect(mapStateToProps);
 interface TopBarProps extends ConnectedProps<typeof connector> {}
 const Tab = createMaterialTopTabNavigator<TopTabsParamsList>();
 const TopTabs = (props: TopBarProps) => {
-  const {gradientVisible} = props;
+  const {gradientVisible, myCategories} = props;
   const renderTabBar = (props: MaterialTopTabBarProps) => {
     return <CustomTobBar {...props} />;
   };
@@ -24,6 +26,18 @@ const TopTabs = (props: TopBarProps) => {
   if (gradientVisible) {
     textColor = '#fff';
   }
+  const renderCategory = (item: ICategory) => {
+    return (
+      <Tab.Screen
+        key={item.id}
+        name={item.id}
+        component={Index}
+        options={{
+          tabBarLabel: item.name,
+        }}
+      />
+    );
+  };
   return (
     <Tab.Navigator
       tabBar={renderTabBar}
@@ -48,13 +62,7 @@ const TopTabs = (props: TopBarProps) => {
         tabBarActiveTintColor: gradientVisible ? textColor : colors.primary,
         tabBarInactiveTintColor: colors.black,
       }}>
-      <Tab.Screen
-        name="index"
-        component={Index}
-        options={{
-          tabBarLabel: '推荐',
-        }}
-      />
+      {myCategories.map(renderCategory)}
     </Tab.Navigator>
   );
 };

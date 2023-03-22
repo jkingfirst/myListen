@@ -11,7 +11,5 @@ type BottomTabsPage =
   | Routes.ACCOUNT;
 export type BottomTabsParamsList = Record<BottomTabsPage, undefined>;
 
-type TopTabsPage = 'index';
+type TopTabsPage = string;
 export type TopTabsParamsList = Record<TopTabsPage, undefined>;
-type a = Record<string, null>;
-const b: a = {a: null};
