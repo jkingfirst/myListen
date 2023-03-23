@@ -8,7 +8,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from 'react-native';
-import {RootStackNavigation} from '@t/navigation';
+import {RootStackNavigation, TopTabsParamsList} from '@t/navigation';
 import {ConnectedProps, connect} from 'react-redux';
 import {RootState} from '@m/index';
 import Carousel from '@p/BottomTabs/Home/components/Carousels';
@@ -17,13 +17,22 @@ import {IChannel} from '@t/home';
 import {useMount} from '@u/customHooks';
 import {itemHeight} from '@p/BottomTabs/Home/components/Carousels';
 import ChannelItem from '@p/BottomTabs/Home/components/Channel/ChannelItem';
-const mapStateToProps = ({home, loading}: RootState) => ({
-  carousels: home.carousels,
-  channels: home.channels,
-  hasMore: home.pagination.hasMore,
-  loading: loading.effects['home/fetchChannel'],
-  gradientVisible: home.gradientVisible,
-});
+import {RouteProp} from '@react-navigation/native';
+const mapStateToProps = (
+  state: RootState,
+  {route}: {route: RouteProp<TopTabsParamsList, string>},
+) => {
+  const {namespace} = route.params;
+  const modelState = state[namespace];
+  return {
+    namespace,
+    carousels: modelState.carousels,
+    channels: modelState.channels,
+    hasMore: modelState.pagination.hasMore,
+    loading: state.loading.effects[`${modelState}/fetchChannel`],
+    gradientVisible: modelState.gradientVisible,
+  };
+};
 const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>;
 interface HomeProps extends ModelState {
@@ -31,13 +40,14 @@ interface HomeProps extends ModelState {
 }
 function Home(props: HomeProps) {
   const [refresh, setRefresh] = useState(false);
-  const {channels, dispatch, loading, hasMore, gradientVisible} = props;
+  const {channels, dispatch, loading, hasMore, gradientVisible, namespace} =
+    props;
   useMount(() => {
     dispatch({
-      type: 'home/fetchChannel',
+      type: `${namespace}/fetchChannel`,
     });
     dispatch({
-      type: 'home/fetchCarousel',
+      type: `${namespace}/fetchCarousel`,
     });
   });
   const renderItem = ({item}: ListRenderItemInfo<IChannel>) => {
@@ -46,8 +56,8 @@ function Home(props: HomeProps) {
   const getHeader = () => {
     return (
       <View>
-        <Carousel />
-        <Guesses />
+        <Carousel namespace={namespace} />
+        <Guesses namespace={namespace} />
       </View>
     );
   };
@@ -78,7 +88,7 @@ function Home(props: HomeProps) {
   const onRefresh = () => {
     setRefresh(true);
     dispatch({
-      type: 'home/fetchHomeData',
+      type: `${namespace}/fetchHomeData`,
       callback: () => {
         setRefresh(false);
       },
@@ -90,7 +100,7 @@ function Home(props: HomeProps) {
       return;
     }
     dispatch({
-      type: 'home/fetchChannel',
+      type: `${namespace}/fetchChannel`,
     });
   };
   const onScroll = ({nativeEvent}: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -98,7 +108,7 @@ function Home(props: HomeProps) {
     const newGradientVisible = itemHeight > offsetY;
     if (gradientVisible !== newGradientVisible) {
       dispatch({
-        type: 'home/setState',
+        type: `${namespace}/setState`,
         payload: {
           gradientVisible: newGradientVisible,
         },

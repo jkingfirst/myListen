@@ -18,6 +18,7 @@ interface HomeState {
   pagination: IPagination;
   activeCarouselsIndex: number; // 首页轮播索引
   gradientVisible: boolean; // 首页渐变组件是否显示
+  namespace: string; // 首页tabBar模块名称
 }
 interface homeModel extends Model {
   namespace: 'home';
@@ -44,6 +45,7 @@ const initialState = {
   },
   activeCarouselsIndex: 0,
   gradientVisible: true,
+  namespace: 'home',
 };
 const home: homeModel = {
   namespace: 'home',

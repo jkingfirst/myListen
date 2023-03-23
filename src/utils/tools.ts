@@ -1,4 +1,6 @@
 import {Dimensions} from 'react-native';
+import {RootStackNavigation} from '@t/navigation';
+import {NavigationState} from '@react-navigation/native';
 const {width: viewWidth, height: viewHeight} = Dimensions.get('window');
 // 更具百分比计算宽高
 type ScreenType = 'width' | 'height';
@@ -14,4 +16,12 @@ const cbMidWare = <T>(cb: (params?: T) => {}, params?: T) => {
     cb(params);
   }
 };
-export {viewWidth, viewHeight, getScreenSize, cbMidWare};
+const getActiveRouteName = (state: NavigationState) => {
+  let route;
+  route = state.routes[state.index];
+  while (route.state && route.state.index) {
+    route = route.state.routes[route.state.index];
+  }
+  return route.name;
+};
+export {viewWidth, viewHeight, getScreenSize, cbMidWare, getActiveRouteName};

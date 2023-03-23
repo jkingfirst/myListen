@@ -8,17 +8,29 @@ import {viewWidth, getScreenSize} from '@u/tools';
 import {View, StyleSheet} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '@m/index';
-const mapStateToProps = ({home}: RootState) => ({
-  carousels: home.carousels,
-  activeCarouselsIndex: home.activeCarouselsIndex,
-});
-interface CarouselsProps extends ConnectedProps<typeof connector> {}
+const mapStateToProps = (state: RootState, props: {namespace: string}) => {
+  const {namespace} = props;
+  const modelState = state[namespace];
+  return {
+    namespace,
+    carousels: modelState.carousels,
+    activeCarouselsIndex: modelState.activeCarouselsIndex,
+  };
+};
+interface CarouselsProps extends ConnectedProps<typeof connector> {
+  namespace: string;
+}
 const connector = connect(mapStateToProps);
 let sliderWidth = viewWidth;
 let itemWidth = getScreenSize(90, 'width');
 export let itemHeight = getScreenSize(26, 'height');
 const Carousels = (props: CarouselsProps) => {
-  const {activeCarouselsIndex: activeDotIndex, carousels, dispatch} = props;
+  const {
+    activeCarouselsIndex: activeDotIndex,
+    carousels,
+    dispatch,
+    namespace,
+  } = props;
   const renderPagination = () => {
     return (
       <View style={styles.pagWrapper}>
@@ -34,7 +46,7 @@ const Carousels = (props: CarouselsProps) => {
   };
   const onSnapToItem = (index: number) => {
     dispatch({
-      type: 'home/setState',
+      type: `${namespace}/setState`,
       payload: {
         activeCarouselsIndex: index,
       },

@@ -10,12 +10,17 @@ import {StyleSheet} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '@m/index';
 import {ICategory} from '@t/category';
-const mapStateToProps = ({home, category}: RootState) => ({
-  gradientVisible: home.gradientVisible,
-  myCategories: category.myCategories,
-});
+import {createModel} from '@conf/dva';
+const mapStateToProps = (state: RootState, props) => {
+  // console.log(JSON.stringify(props), '你好');
+  return {
+    gradientVisible: state.home.gradientVisible,
+    myCategories: state.category.myCategories,
+  };
+};
 const connector = connect(mapStateToProps);
-interface TopBarProps extends ConnectedProps<typeof connector> {}
+type ModelState = ConnectedProps<typeof connector>;
+export interface TopBarProps extends ModelState {}
 const Tab = createMaterialTopTabNavigator<TopTabsParamsList>();
 const TopTabs = (props: TopBarProps) => {
   const {gradientVisible, myCategories} = props;
@@ -27,6 +32,7 @@ const TopTabs = (props: TopBarProps) => {
     textColor = '#fff';
   }
   const renderCategory = (item: ICategory) => {
+    createModel(item.id);
     return (
       <Tab.Screen
         key={item.id}
@@ -34,6 +40,9 @@ const TopTabs = (props: TopBarProps) => {
         component={Index}
         options={{
           tabBarLabel: item.name,
+        }}
+        initialParams={{
+          namespace: item.id,
         }}
       />
     );

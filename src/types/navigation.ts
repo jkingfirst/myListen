@@ -12,4 +12,4 @@ type BottomTabsPage =
 export type BottomTabsParamsList = Record<BottomTabsPage, undefined>;
 
 type TopTabsPage = string;
-export type TopTabsParamsList = Record<TopTabsPage, undefined>;
+export type TopTabsParamsList = Record<TopTabsPage, {namespace: string}>;

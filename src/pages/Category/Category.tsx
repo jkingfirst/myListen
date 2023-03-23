@@ -23,13 +23,13 @@ const Category = (props: CategoryProps) => {
   const {myCategories, allCategories, navigation, dispatch, isEdit} = props;
   const [pageMyCategories, setPageMyCategories] = useState(myCategories);
 
-  const assembleAllCategories = allCategories
+  let assembleAllCategories = allCategories
     .map(allCategoryItem => {
       if (pageMyCategories.every(item => item.id !== allCategoryItem.id)) {
         return allCategoryItem;
       }
     })
-    .filter(item => item !== undefined);
+    .filter(item => item !== undefined) as ICategory[];
   let categoryGroups =
     _.groupBy(
       assembleAllCategories,
@@ -116,7 +116,7 @@ const Category = (props: CategoryProps) => {
             <View key={item}>
               <Text style={styles.classifyName}>{item}</Text>
               <View style={styles.classifyView}>
-                {categoryGroups[item].map(renderItem)}
+                {categoryGroups[item] && categoryGroups[item].map(renderItem)}
               </View>
             </View>
           );

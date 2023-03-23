@@ -5,16 +5,23 @@ import {useMount} from '@u/customHooks';
 import {Guess} from '@t/home';
 import Touchable from '@c/TouchableOpacity';
 import IconFont from '@assets/iconfont';
-const mapPropsToState = ({home}: RootState) => ({
-  guesses: home.guesses,
-});
+const mapPropsToState = (state: RootState, props: {namespace: string}) => {
+  const {namespace} = props;
+  const modelState = state[namespace];
+  return {
+    guesses: modelState.guesses,
+  };
+};
 const connector = connect(mapPropsToState);
 type StateModel = ConnectedProps<typeof connector>;
-const Guesses = (props: StateModel) => {
-  const {dispatch, guesses} = props;
+interface GuessProps extends StateModel {
+  namespace: string;
+}
+const Guesses = (props: GuessProps) => {
+  const {dispatch, guesses, namespace} = props;
   const getGuessList = () => {
     dispatch({
-      type: 'home/fetchGuess',
+      type: `${namespace}/fetchGuess`,
     });
   };
   const renderItem = ({item}: {item: Guess}) => {

@@ -8,14 +8,21 @@ import {connect, ConnectedProps} from 'react-redux';
 import Touchable from '@c/TouchableOpacity';
 import LinearGradient from 'react-native-linear-gradient';
 import {RootState} from '@m/index';
-const mapStateToProps = ({home}: RootState) => ({
-  carousels: home.carousels,
-  activeCarouselsIndex: home.activeCarouselsIndex,
-  gradientVisible: home.gradientVisible,
-});
+import {getActiveRouteName} from '@u/tools';
+import {useEffect} from 'react';
+const mapStateToProps = (state: RootState, props: MaterialTopTabBarProps) => {
+  let routeName = getActiveRouteName(props.state);
+  const modelState = state[routeName];
+
+  return {
+    carousels: modelState.carousels,
+    activeCarouselsIndex: modelState.activeCarouselsIndex,
+    gradientVisible: modelState.gradientVisible,
+  };
+};
 const connector = connect(mapStateToProps);
-type modelState = ConnectedProps<typeof connector>;
-type CProps = MaterialTopTabBarProps & modelState;
+type ModelState = ConnectedProps<typeof connector>;
+type CProps = MaterialTopTabBarProps & ModelState;
 
 const CustomTobBar = (props: CProps) => {
   const {
