@@ -11,7 +11,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '@m/index';
 import {ICategory} from '@t/category';
 import {createModel} from '@conf/dva';
-const mapStateToProps = (state: RootState, props) => {
+const mapStateToProps = (state: RootState) => {
   // console.log(JSON.stringify(props), '你好');
   return {
     gradientVisible: state.home.gradientVisible,

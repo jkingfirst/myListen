@@ -8,6 +8,8 @@ import {viewWidth, getScreenSize} from '@u/tools';
 import {View, StyleSheet} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '@m/index';
+import {RootStackNavigation} from '@t/navigation';
+import {useEffect} from 'react';
 const mapStateToProps = (state: RootState, props: {namespace: string}) => {
   const {namespace} = props;
   const modelState = state[namespace];
@@ -19,6 +21,7 @@ const mapStateToProps = (state: RootState, props: {namespace: string}) => {
 };
 interface CarouselsProps extends ConnectedProps<typeof connector> {
   namespace: string;
+  navigation: RootStackNavigation;
 }
 const connector = connect(mapStateToProps);
 let sliderWidth = viewWidth;
@@ -30,6 +33,7 @@ const Carousels = (props: CarouselsProps) => {
     carousels,
     dispatch,
     namespace,
+    navigation,
   } = props;
   const renderPagination = () => {
     return (

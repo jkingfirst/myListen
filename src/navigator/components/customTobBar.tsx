@@ -10,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {RootState} from '@m/index';
 import {getActiveRouteName} from '@u/tools';
 import {useEffect} from 'react';
+import {RootStackNavigation} from '@t/navigation';
 const mapStateToProps = (state: RootState, props: MaterialTopTabBarProps) => {
   let routeName = getActiveRouteName(props.state);
   const modelState = state[routeName];
