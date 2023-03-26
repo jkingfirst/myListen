@@ -7,6 +7,7 @@ import {RootState} from '@m/index';
 import {RouteProp} from '@react-navigation/native';
 import {RootStackParamsList} from '@t/navigation';
 import {useMount} from '@u/customHooks';
+import Tab from './components/Tab';
 const mapStateToProps = ({album}: RootState) => ({
   author: album.author,
   summary: album.summary,
@@ -63,9 +64,7 @@ const Album = (props: AlbumProps) => {
   return (
     <View style={styles.AlbumWrapper}>
       {renderThumbnail()}
-      <View>
-        <Text>tab</Text>
-      </View>
+      <Tab />
     </View>
   );
 };
