@@ -1,35 +1,41 @@
-import { View,Text,StyleSheet,Image } from "react-native";
-import { IChannel } from "@t/home";
-import Touchable from "@c/TouchableOpacity";
-import IconFont from "@assets/iconfont";
-interface ChannelItemProps{
+import {View, Text, StyleSheet, Image} from 'react-native';
+import {IChannel} from '@t/home';
+import Touchable from '@c/TouchableOpacity';
+import IconFont from '@assets/iconfont';
+interface ChannelItemProps {
   data: IChannel;
+  goAlbum: (item: IChannel) => void;
 }
-export default function ChannelItem(props:ChannelItemProps){
-  const {data} = props
-  return( <Touchable >
-    <View style={styles.container}>
-      <Image source={{uri: data.image}} style={styles.image} />
-      <View style={styles.rightContainer}>
-        <Text style={styles.title} numberOfLines={1}>
-          {data.title}
-        </Text>
-        <Text style={styles.remark} numberOfLines={2}>
-          {data.remark}
-        </Text>
-        <View style={styles.bottom}>
-          <View style={styles.playedView}>
-            <IconFont name="icon-home" size={14} />
-            <Text style={styles.number}>{data.played}</Text>
-          </View>
-          <View style={styles.playingView}>
-            <IconFont name="icon-home" size={14} />
-            <Text style={styles.number}>{data.playing}</Text>
+export default function ChannelItem(props: ChannelItemProps) {
+  const {data, goAlbum} = props;
+  const onPress = (item: IChannel) => {
+    goAlbum(item);
+  };
+  return (
+    <Touchable onPress={() => onPress(data)}>
+      <View style={styles.container}>
+        <Image source={{uri: data.image}} style={styles.image} />
+        <View style={styles.rightContainer}>
+          <Text style={styles.title} numberOfLines={1}>
+            {data.title}
+          </Text>
+          <Text style={styles.remark} numberOfLines={2}>
+            {data.remark}
+          </Text>
+          <View style={styles.bottom}>
+            <View style={styles.playedView}>
+              <IconFont name="icon-home" size={14} />
+              <Text style={styles.number}>{data.played}</Text>
+            </View>
+            <View style={styles.playingView}>
+              <IconFont name="icon-home" size={14} />
+              <Text style={styles.number}>{data.playing}</Text>
+            </View>
           </View>
         </View>
       </View>
-    </View>
-  </Touchable>)
+    </Touchable>
+  );
 }
 const styles = StyleSheet.create({
   container: {

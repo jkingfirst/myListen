@@ -13,7 +13,7 @@ import {ConnectedProps, connect} from 'react-redux';
 import {RootState} from '@m/index';
 import Carousel from '@p/BottomTabs/Home/components/Carousels';
 import Guesses from '@p/BottomTabs/Home/components/Guesses';
-import {IChannel} from '@t/home';
+import {Guess, IChannel} from '@t/home';
 import {useMount} from '@u/customHooks';
 import {itemHeight} from '@p/BottomTabs/Home/components/Carousels';
 import ChannelItem from '@p/BottomTabs/Home/components/Channel/ChannelItem';
@@ -40,8 +40,15 @@ interface HomeProps extends ModelState {
 }
 function Home(props: HomeProps) {
   const [refresh, setRefresh] = useState(false);
-  const {channels, dispatch, loading, hasMore, gradientVisible, namespace} =
-    props;
+  const {
+    channels,
+    dispatch,
+    loading,
+    hasMore,
+    gradientVisible,
+    namespace,
+    navigation,
+  } = props;
   useMount(() => {
     dispatch({
       type: `${namespace}/fetchChannel`,
@@ -50,14 +57,20 @@ function Home(props: HomeProps) {
       type: `${namespace}/fetchCarousel`,
     });
   });
+  const goAlbum = (item: IChannel | Guess) => {
+    console.log('hello word');
+    navigation.navigate('Album', {
+      item,
+    });
+  };
   const renderItem = ({item}: ListRenderItemInfo<IChannel>) => {
-    return <ChannelItem data={item} />;
+    return <ChannelItem data={item} goAlbum={goAlbum} />;
   };
   const getHeader = () => {
     return (
       <View>
         <Carousel namespace={namespace} />
-        <Guesses namespace={namespace} />
+        <Guesses namespace={namespace} goAlbum={goAlbum} />
       </View>
     );
   };

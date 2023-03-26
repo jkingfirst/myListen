@@ -22,7 +22,7 @@ const initState: AlbumState = {
   introduction: '',
   author: {
     name: '',
-    avatar: '',
+    avatar: 'http://www.baidu.com',
   },
   list: [],
 };
@@ -42,11 +42,10 @@ const albumModel: AlbumModel = {
       const {data}: ResponseGenerator = yield call(getAlbumDetail, {
         id: payload.id,
       });
+      console.log(data.author, '+++++++++');
       yield put({
         type: 'setState',
-        payload: {
-          list: data,
-        },
+        payload: data,
       });
     },
   },

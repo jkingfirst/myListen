@@ -16,17 +16,21 @@ const connector = connect(mapPropsToState);
 type StateModel = ConnectedProps<typeof connector>;
 interface GuessProps extends StateModel {
   namespace: string;
+  goAlbum: (item: Guess) => void;
 }
 const Guesses = (props: GuessProps) => {
-  const {dispatch, guesses, namespace} = props;
+  const {dispatch, guesses, namespace, goAlbum} = props;
   const getGuessList = () => {
     dispatch({
       type: `${namespace}/fetchGuess`,
     });
   };
+  const onPress = (item: Guess) => {
+    goAlbum(item);
+  };
   const renderItem = ({item}: {item: Guess}) => {
     return (
-      <Touchable style={styles.item}>
+      <Touchable style={styles.item} onPress={() => onPress(item)}>
         <Image source={{uri: item.image}} style={styles.image} />
         <Text numberOfLines={2}>{item.title}</Text>
       </Touchable>

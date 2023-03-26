@@ -1,11 +1,30 @@
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, RouteProp} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Detail} from '@p/index';
+import {Album} from '@p/index';
 import BottomTabs from '@n/BottomTabs';
 import {RootStackParamsList} from '@t/navigation';
+
 import Category from '@p/Category/Category';
+import {Animated, StyleSheet} from 'react-native';
+import View = Animated.View;
 const Stack = createNativeStackNavigator<RootStackParamsList>();
 export default function RootStack() {
+  const getAlbumOptions = ({
+    route,
+  }: {
+    route: RouteProp<RootStackParamsList, 'Album'>;
+  }) => {
+    return {
+      headerTitle: route.params.item.title,
+      headerTransparent: true,
+      headerStyle: {backgroundColor: 'transparent'},
+      headerBackground: renderHeaderBackground,
+    };
+  };
+  // 渲染头部北京
+  const renderHeaderBackground = () => {
+    return <View style={styles.headerBackground} />;
+  };
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -26,12 +45,9 @@ export default function RootStack() {
           component={BottomTabs}
         />
         <Stack.Screen
-          options={{
-            headerTitle: '详情页',
-            headerStyle: {backgroundColor: 'papayawhip'},
-          }}
-          name="Detail"
-          component={Detail}
+          options={getAlbumOptions}
+          name="Album"
+          component={Album}
         />
         <Stack.Screen
           name={'Category'}
@@ -44,3 +60,8 @@ export default function RootStack() {
     </NavigationContainer>
   );
 }
+const styles = StyleSheet.create({
+  headerBackground: {
+    opacity: 0,
+  },
+});

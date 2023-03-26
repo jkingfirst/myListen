@@ -1,4 +1,4 @@
-export {default as Detail} from './Detail/Detail';
+export {default as Album} from './Album/Album';
 // tab页面
 export {default as Index} from './BottomTabs/Home/Home';
 export {default as Listen} from './BottomTabs/Listen';
