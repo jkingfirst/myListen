@@ -8,11 +8,24 @@ import {RouteProp} from '@react-navigation/native';
 import {RootStackParamsList} from '@t/navigation';
 import {useMount} from '@u/customHooks';
 import Tab from './components/Tab';
+import Example from '@p/Album/components/Test';
 const mapStateToProps = ({album}: RootState) => ({
   author: album.author,
   summary: album.summary,
   list: album.list,
 });
+import {
+  Gesture,
+  GestureDetector,
+  GestureUpdateEvent,
+  PanGestureChangeEventPayload,
+  PanGestureHandlerEventPayload,
+} from 'react-native-gesture-handler';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 const connector = connect(mapStateToProps);
 type ModeState = ConnectedProps<typeof connector>;
 interface AlbumProps extends ModeState {
@@ -20,9 +33,45 @@ interface AlbumProps extends ModeState {
 }
 const AlbumHeight = 260;
 const Album = (props: AlbumProps) => {
-  const {list, author, summary, route, dispatch} = props;
+  const {author, summary, route, dispatch} = props;
   const {title, image, id} = route.params.item;
   const headerHeight = useHeaderHeight();
+  const MAX_OFFSET = 260 - headerHeight;
+  const isPressed = useSharedValue(false);
+  const offset = useSharedValue({translateY: 0});
+  const animatedStyles = useAnimatedStyle(() => {
+    return {
+      transform: [{translateY: withSpring(offset.value.translateY)}],
+    };
+  });
+  const gesture = Gesture.Pan()
+    .onBegin(() => {
+      'worklet';
+      isPressed.value = true;
+    })
+    .onChange(
+      (
+        event: GestureUpdateEvent<
+          PanGestureHandlerEventPayload & PanGestureChangeEventPayload
+        >,
+      ) => {
+        'worklet';
+        console.log(event.translationY, '++++++++');
+        console.log(offset.value.translateY, '-------');
+        console.log(MAX_OFFSET, 'offset');
+        console.log(event, 'event');
+        offset.value = {
+          translateY:
+            offset.value.translateY > -MAX_OFFSET
+              ? event.changeY + offset.value.translateY
+              : -MAX_OFFSET,
+        };
+      },
+    )
+    .onFinalize(() => {
+      'worklet';
+      isPressed.value = false;
+    });
   useMount(() => {
     dispatch({
       type: 'album/getAlbum',
@@ -32,7 +81,13 @@ const Album = (props: AlbumProps) => {
     });
   });
   const renderThumbnail = () => (
-    <View style={[styles.headerWrapper, {paddingTop: headerHeight}]}>
+    <View
+      style={[
+        styles.headerWrapper,
+        {
+          paddingTop: headerHeight,
+        },
+      ]}>
       <Image source={{uri: image}} style={styles.background} />
       <BlurView
         blurType="light"
@@ -61,11 +116,19 @@ const Album = (props: AlbumProps) => {
       </View>
     </View>
   );
+
   return (
-    <View style={styles.AlbumWrapper}>
-      {renderThumbnail()}
-      <Tab />
-    </View>
+    <GestureDetector gesture={gesture}>
+      <View style={styles.AlbumWrapper}>
+        <Animated.View style={[styles.AlbumWrapper, animatedStyles]}>
+          {renderThumbnail()}
+          <Tab />
+        </Animated.View>
+      </View>
+    </GestureDetector>
+    // <View style={styles.AlbumWrapper}>
+    //   <Example />
+    // </View>
   );
 };
 export default connector(Album);

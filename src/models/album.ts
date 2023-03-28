@@ -42,7 +42,6 @@ const albumModel: AlbumModel = {
       const {data}: ResponseGenerator = yield call(getAlbumDetail, {
         id: payload.id,
       });
-      console.log(data.introduction, '_________🚀');
       yield put({
         type: 'setState',
         payload: data,
