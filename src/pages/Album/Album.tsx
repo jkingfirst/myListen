@@ -8,7 +8,6 @@ import {RouteProp} from '@react-navigation/native';
 import {RootStackParamsList} from '@t/navigation';
 import {useMount} from '@u/customHooks';
 import Tab from './components/Tab';
-import Example from '@p/Album/components/Test';
 const mapStateToProps = ({album}: RootState) => ({
   author: album.author,
   summary: album.summary,
@@ -17,6 +16,7 @@ const mapStateToProps = ({album}: RootState) => ({
 import {
   Gesture,
   GestureDetector,
+  GestureHandlerRootView,
   GestureUpdateEvent,
   PanGestureChangeEventPayload,
   PanGestureHandlerEventPayload,
@@ -26,6 +26,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
+import {viewHeight} from '@u/tools';
 const connector = connect(mapStateToProps);
 type ModeState = ConnectedProps<typeof connector>;
 interface AlbumProps extends ModeState {
@@ -36,12 +37,18 @@ const Album = (props: AlbumProps) => {
   const {author, summary, route, dispatch} = props;
   const {title, image, id} = route.params.item;
   const headerHeight = useHeaderHeight();
-  const MAX_OFFSET = 260 - headerHeight;
+  // 最大偏移的绝对值
+  const MAX_OFFSET_ABS = 260 - headerHeight;
   const isPressed = useSharedValue(false);
-  const offset = useSharedValue({translateY: 0});
+  // 纵向Y偏移距离
+  const translateY = useSharedValue(0);
   const animatedStyles = useAnimatedStyle(() => {
     return {
-      transform: [{translateY: withSpring(offset.value.translateY)}],
+      transform: [
+        {
+          translateY: withSpring(translateY.value),
+        },
+      ],
     };
   });
   const gesture = Gesture.Pan()
@@ -56,20 +63,25 @@ const Album = (props: AlbumProps) => {
         >,
       ) => {
         'worklet';
+        let {value: translationY} = translateY;
         console.log(event.translationY, '++++++++');
-        console.log(offset.value.translateY, '-------');
-        console.log(MAX_OFFSET, 'offset');
+        console.log(translationY, '------');
+        console.log(MAX_OFFSET_ABS, 'offset');
         console.log(event, 'event');
-        offset.value = {
-          translateY:
-            offset.value.translateY > -MAX_OFFSET
-              ? event.changeY + offset.value.translateY
-              : -MAX_OFFSET,
-        };
+        let offsetTranslateY = 0;
+        if (translationY >= -MAX_OFFSET_ABS && translationY <= 0) {
+          console.log('正常移动');
+          offsetTranslateY = event.changeY + translateY.value;
+        } else {
+          offsetTranslateY =
+            translationY < -MAX_OFFSET_ABS ? -MAX_OFFSET_ABS : 0;
+        }
+        translateY.value = offsetTranslateY;
       },
     )
-    .onFinalize(() => {
+    .onFinalize(e => {
       'worklet';
+      console.log(e, 'finish');
       isPressed.value = false;
     });
   useMount(() => {
@@ -118,14 +130,19 @@ const Album = (props: AlbumProps) => {
   );
 
   return (
-    <GestureDetector gesture={gesture}>
-      <View style={styles.AlbumWrapper}>
-        <Animated.View style={[styles.AlbumWrapper, animatedStyles]}>
-          {renderThumbnail()}
-          <Tab />
-        </Animated.View>
-      </View>
-    </GestureDetector>
+    <GestureHandlerRootView>
+      <GestureDetector gesture={gesture}>
+        <View style={styles.AlbumWrapper}>
+          <Animated.View style={[styles.AlbumWrapper, animatedStyles]}>
+            {renderThumbnail()}
+            <View style={{height: viewHeight - headerHeight}}>
+              <Tab />
+            </View>
+          </Animated.View>
+        </View>
+      </GestureDetector>
+    </GestureHandlerRootView>
+
     // <View style={styles.AlbumWrapper}>
     //   <Example />
     // </View>
@@ -189,6 +206,8 @@ const styles = StyleSheet.create({
     width: 26,
     borderRadius: 13,
     marginRight: 8,
+    resizeMode: 'cover',
+    backgroundColor: '#f00',
   },
   name: {
     color: '#fff',

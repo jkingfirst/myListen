@@ -58,7 +58,6 @@ function Home(props: HomeProps) {
     });
   });
   const goAlbum = (item: IChannel | Guess) => {
-    console.log('hello word');
     navigation.navigate('Album', {
       item,
     });

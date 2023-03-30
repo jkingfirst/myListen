@@ -1,14 +1,17 @@
 import {NavigationContainer, RouteProp} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Album} from '@p/index';
+import {Play} from '@p/index';
 import BottomTabs from '@n/BottomTabs';
-import {RootStackParamsList} from '@t/navigation';
+import {RootStackParamsList, ModelRootStackParamsList} from '@t/navigation';
 
 import Category from '@p/Category/Category';
 import {Animated, StyleSheet} from 'react-native';
 import View = Animated.View;
+//最底层的路由，包括全屏路由
+const ModalStack = createNativeStackNavigator<ModelRootStackParamsList>();
 const Stack = createNativeStackNavigator<RootStackParamsList>();
-export default function RootStack() {
+function StackNavigator() {
   const getAlbumOptions = ({
     route,
   }: {
@@ -26,37 +29,55 @@ export default function RootStack() {
     return <View style={styles.headerBackground} />;
   };
   return (
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleAlign: 'center',
+        gestureEnabled: true,
+        animation: 'slide_from_right',
+        headerBackVisible: true,
+        headerTintColor: '#333',
+      }}>
+      <Stack.Screen
+        options={{
+          headerTitle: '首页',
+          headerShown: false,
+          headerStyle: {backgroundColor: '#0ff'},
+        }}
+        name="BottomTabs"
+        component={BottomTabs}
+      />
+      <Stack.Screen options={getAlbumOptions} name="Album" component={Album} />
+      <Stack.Screen
+        name={'Category'}
+        component={Category}
+        options={{
+          headerTitle: '分类',
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+export default function RootStack() {
+  return (
     <NavigationContainer>
-      <Stack.Navigator
+      <ModalStack.Navigator
         screenOptions={{
-          headerTitleAlign: 'center',
-          gestureEnabled: true,
-          animation: 'slide_from_right',
-          headerBackVisible: true,
-          headerTintColor: '#333',
+          headerBackTitleVisible: false,
+          headerShown: false,
         }}>
-        <Stack.Screen
-          options={{
-            headerTitle: '首页',
-            headerShown: false,
-            headerStyle: {backgroundColor: '#0ff'},
-          }}
-          name="BottomTabs"
-          component={BottomTabs}
+        <ModalStack.Screen
+          name={'Root'}
+          component={StackNavigator}
+          options={{}}
         />
-        <Stack.Screen
-          options={getAlbumOptions}
-          name="Album"
-          component={Album}
-        />
-        <Stack.Screen
-          name={'Category'}
-          component={Category}
+        <ModalStack.Screen
+          name={'Play'}
+          component={Play}
           options={{
-            headerTitle: '分类',
+            headerTransparent: true,
           }}
         />
-      </Stack.Navigator>
+      </ModalStack.Navigator>
     </NavigationContainer>
   );
 }

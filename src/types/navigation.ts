@@ -1,6 +1,12 @@
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Routes} from '@const/routes';
-type StackPage = 'BottomTabs' | 'Album' | 'Category';
+export type ModelRootStackParamsList = {
+  Root: undefined;
+  Play: {
+    id: string;
+  };
+};
+
 export type RootStackParamsList = {
   BottomTabs: undefined;
   Album: {
@@ -12,6 +18,8 @@ export type RootStackParamsList = {
   };
   Category: undefined;
 };
+export type ModalRootStackNavigation =
+  NativeStackNavigationProp<ModelRootStackParamsList>;
 export type RootStackNavigation =
   NativeStackNavigationProp<RootStackParamsList>;
 type BottomTabsPage =

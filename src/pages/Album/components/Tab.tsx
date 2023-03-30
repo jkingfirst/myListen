@@ -24,7 +24,7 @@ const renderScene = ({route}: {route: IRoute}) => {
   }
 };
 const Tab = () => {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(1);
   const [routes] = useState<IRoute[]>([
     {key: 'summary', title: '简介'},
     {key: 'programList', title: '列表'},
