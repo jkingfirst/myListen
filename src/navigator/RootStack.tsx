@@ -4,7 +4,6 @@ import {Album} from '@p/index';
 import {Play} from '@p/index';
 import BottomTabs from '@n/BottomTabs';
 import {RootStackParamsList, ModelRootStackParamsList} from '@t/navigation';
-
 import Category from '@p/Category/Category';
 import {Animated, StyleSheet} from 'react-native';
 import View = Animated.View;
@@ -39,7 +38,6 @@ function StackNavigator() {
       }}>
       <Stack.Screen
         options={{
-          headerTitle: '首页',
           headerShown: false,
           headerStyle: {backgroundColor: '#0ff'},
         }}
@@ -74,7 +72,7 @@ export default function RootStack() {
           name={'Play'}
           component={Play}
           options={{
-            headerTransparent: true,
+            animation: 'slide_from_bottom',
           }}
         />
       </ModalStack.Navigator>

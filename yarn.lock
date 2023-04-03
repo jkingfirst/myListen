@@ -6716,6 +6716,11 @@ react-native-screens@^3.20.0:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-slider-x@^0.11.3:
+  version "0.11.3"
+  resolved "https://registry.yarnpkg.com/react-native-slider-x/-/react-native-slider-x-0.11.3.tgz#a1a7561e807c5d38019e9bdffbef2cd2e75ef7e9"
+  integrity sha512-xuxFhyhK1agUjfj31ifTHbFYDwTXXfQh+j/ZNCeskuiIWimb2iWFFfP9PYe607UYQ5nUdUIlQZLTNnRaY9+t7g==
+
 react-native-snap-carousel@^3.9.1:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/react-native-snap-carousel/-/react-native-snap-carousel-3.9.1.tgz#6fd9bd8839546c2c6043a41d2035afbc6fe0443e"

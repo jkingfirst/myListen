@@ -4,7 +4,7 @@ let sound: Sound;
 //创建播放器
 const init = (soundUrl: string) => {
   return new Promise<void>((resolve, reject) => {
-    sound = new Sound(soundUrl, err => {
+    sound = new Sound(soundUrl, '', err => {
       if (err) {
         reject(err);
       } else {
@@ -29,13 +29,38 @@ const play = () => {
     }
   });
 };
+const pause = () => {
+  return new Promise<void>(resolve => {
+    if (sound) {
+      sound.pause(() => {
+        resolve();
+      });
+    } else {
+      resolve();
+    }
+  });
+};
+const stop = () => {
+  return new Promise<void>(resolve => {
+    if (sound) {
+      sound.stop(() => {
+        resolve();
+      });
+    } else {
+      resolve();
+    }
+  });
+};
 // 获取当前歌曲播放时间
 const getSoundCurrentTime = () => {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     if (sound && sound.isLoaded()) {
-      sound.getCurrentTime(resolve);
+      sound.getCurrentTime(seconds => {
+        console.log(seconds, '%%%%%%');
+        resolve(seconds);
+      });
     } else {
-      reject();
+      resolve(0);
     }
   });
 };
@@ -47,4 +72,4 @@ const getDuration = () => {
     return 0;
   }
 };
-export default [init, play, getSoundCurrentTime, getDuration];
+export {init, play, pause, stop, getSoundCurrentTime, getDuration};

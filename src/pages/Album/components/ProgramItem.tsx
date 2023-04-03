@@ -19,11 +19,11 @@ export default function ProgramItem(props: IProps) {
         <Text style={styles.title}>{item.title}</Text>
         <View style={styles.info}>
           <View style={styles.iconView}>
-            <IconFont name="icon-home" color="#939393" />
+            <IconFont name="icon-play" color="#939393" />
             <Text style={styles.iconText}>{item.playVolume}</Text>
           </View>
           <View style={styles.iconView}>
-            <IconFont name="icon-home" color="#939393" />
+            <IconFont name="icon-duration" color="#939393" />
             <Text style={styles.iconText}>{item.duration}</Text>
           </View>
         </View>

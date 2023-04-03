@@ -64,10 +64,6 @@ const Album = (props: AlbumProps) => {
       ) => {
         'worklet';
         let {value: translationY} = translateY;
-        console.log(event.translationY, '++++++++');
-        console.log(translationY, '------');
-        console.log(MAX_OFFSET_ABS, 'offset');
-        console.log(event, 'event');
         let offsetTranslateY = 0;
         if (translationY >= -MAX_OFFSET_ABS && translationY <= 0) {
           console.log('正常移动');
@@ -81,7 +77,6 @@ const Album = (props: AlbumProps) => {
     )
     .onFinalize(e => {
       'worklet';
-      console.log(e, 'finish');
       isPressed.value = false;
     });
   useMount(() => {

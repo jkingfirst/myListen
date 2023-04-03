@@ -4,7 +4,7 @@ export interface RequestConfig extends AxiosRequestConfig {
   mock?: boolean; // 是否模拟
 }
 export type DataType = {[key: string]: any};
-const ICODE = '00310DF430F5B9BB';
+const ICODE = 'C3A6C2D409030E37';
 const headerToken = {
   icode: ICODE,
 };
