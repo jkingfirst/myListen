@@ -31,6 +31,7 @@ const albumModel: AlbumModel = {
   state: initState,
   reducers: {
     setState(state = initState, {payload}) {
+      console.log('_____________________');
       return {
         ...state,
         ...payload,
@@ -42,6 +43,7 @@ const albumModel: AlbumModel = {
       const {data}: ResponseGenerator = yield call(getAlbumDetail, {
         id: payload.id,
       });
+      console.log(data, '火箭🚀');
       yield put({
         type: 'setState',
         payload: data,

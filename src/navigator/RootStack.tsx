@@ -7,6 +7,7 @@ import {RootStackParamsList, ModelRootStackParamsList} from '@t/navigation';
 import Category from '@p/Category/Category';
 import {Animated, StyleSheet} from 'react-native';
 import View = Animated.View;
+import IconFont from '@assets/iconfont';
 //最底层的路由，包括全屏路由
 const ModalStack = createNativeStackNavigator<ModelRootStackParamsList>();
 const Stack = createNativeStackNavigator<RootStackParamsList>();
@@ -55,24 +56,34 @@ function StackNavigator() {
     </Stack.Navigator>
   );
 }
+const BackImage = (props: {color: string}) => {
+  return <IconFont name={'icon-down'} size={30} color={props.color} />;
+};
 export default function RootStack() {
   return (
     <NavigationContainer>
       <ModalStack.Navigator
         screenOptions={{
           headerBackTitleVisible: false,
-          headerShown: false,
         }}>
         <ModalStack.Screen
           name={'Root'}
           component={StackNavigator}
-          options={{}}
+          options={{
+            headerShown: false,
+          }}
         />
         <ModalStack.Screen
           name={'Play'}
           component={Play}
           options={{
             animation: 'slide_from_bottom',
+            headerTransparent: true,
+            headerTintColor: '#fff',
+            headerTitle: '',
+            headerBackTitle: '',
+            headerBackTitleVisible: false,
+            headerBackImage: BackImage,
           }}
         />
       </ModalStack.Navigator>

@@ -86,6 +86,12 @@ const Album = (props: AlbumProps) => {
         id,
       },
     });
+    dispatch({
+      type: 'player/setState',
+      payload: {
+        thumbnailUrl: image,
+      },
+    });
   });
   const renderThumbnail = () => (
     <View

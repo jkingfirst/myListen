@@ -4,4 +4,5 @@ export interface InitState {
   playStatus: string;
   currentTime: number;
   duration: number;
+  thumbnailUrl: string;
 }
