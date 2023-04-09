@@ -83,7 +83,6 @@ export default function RootStack() {
             headerTitle: '',
             headerBackTitle: '',
             headerBackTitleVisible: false,
-            headerBackImage: BackImage,
           }}
         />
       </ModalStack.Navigator>

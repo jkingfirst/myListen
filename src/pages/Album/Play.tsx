@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {View, Text, StyleSheet, Animated} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '@m/index';
@@ -10,7 +10,9 @@ import Touchable from '@c/TouchableOpacity';
 import Slider from '@p/Album/components/Slider';
 import LinearGradient from 'react-native-linear-gradient';
 import {viewWidth} from '@u/tools';
+import Barrage from '@p/Album/components/Barrage/Barrage';
 const IMAGE_WIDTH = 180;
+const PADDING_TOP = (viewWidth - IMAGE_WIDTH) / 2;
 const mapStateToProps = ({player, album}: RootState) => ({
   playStatus: player.playStatus,
   list: album.list,
@@ -42,7 +44,7 @@ const Play = (props: IPlay) => {
     });
   };
   const [isOpen, setIsOpen] = useState(false);
-  const scale = new Animated.Value(1);
+  const scale = useMemo(() => new Animated.Value(1), []);
   const toggleBarrage = () => {
     setIsOpen(isOpen => !isOpen);
   };
@@ -52,7 +54,7 @@ const Play = (props: IPlay) => {
       duration: 200,
       useNativeDriver: true,
     }).start();
-  }, [isOpen]);
+  }, [isOpen, scale]);
   return (
     <View style={[styles.container]}>
       <View style={[styles.imageView]}>
@@ -72,13 +74,16 @@ const Play = (props: IPlay) => {
             uri: thumbnailUrl,
           }}
         />
-        {isOpen ? (
+      </View>
+      {isOpen ? (
+        <>
           <LinearGradient
             colors={['rgba(128,104,102,0.5)', '#807c66']}
             style={styles.linearGradient}
           />
-        ) : null}
-      </View>
+          <Barrage isOpen={isOpen} />
+        </>
+      ) : null}
       <Touchable style={styles.barrageBtn} onPress={toggleBarrage}>
         <Text style={styles.barrageText}>弹幕</Text>
       </Touchable>
@@ -107,8 +112,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#807c66',
     flex: 1,
-    paddingTop: 100,
-    paddingHorizontal: 10,
+    paddingTop: PADDING_TOP,
   },
   imageView: {
     flexDirection: 'row',
@@ -135,8 +139,9 @@ const styles = StyleSheet.create({
   },
   linearGradient: {
     position: 'absolute',
+    left: 0,
     top: 0,
-    height: viewWidth,
     width: viewWidth,
+    height: viewWidth,
   },
 });
