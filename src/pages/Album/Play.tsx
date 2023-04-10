@@ -81,7 +81,7 @@ const Play = (props: IPlay) => {
             colors={['rgba(128,104,102,0.5)', '#807c66']}
             style={styles.linearGradient}
           />
-          <Barrage isOpen={isOpen} />
+          <Barrage isOpen={isOpen} style={styles.barrage} maxTrack={5} />
         </>
       ) : null}
       <Touchable style={styles.barrageBtn} onPress={toggleBarrage}>
@@ -143,5 +143,8 @@ const styles = StyleSheet.create({
     top: 0,
     width: viewWidth,
     height: viewWidth,
+  },
+  barrage: {
+    top: PADDING_TOP,
   },
 });
