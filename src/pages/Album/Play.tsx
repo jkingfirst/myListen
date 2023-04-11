@@ -26,12 +26,14 @@ interface IPlay extends ModelState {
 const Play = (props: IPlay) => {
   const {dispatch, route, playStatus, thumbnailUrl} = props;
   useMount(() => {
-    dispatch({
-      type: 'player/getPlayerDetail',
-      payload: {
-        id: route.params.id,
-      },
-    });
+    if (route.params && route.params.id) {
+      dispatch({
+        type: 'player/getPlayerDetail',
+        payload: {
+          id: route.params.id,
+        },
+      });
+    }
   });
   const togglePlay = () => {
     dispatch({

@@ -1,13 +1,14 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Listen, Found, Account} from '@p/index';
 import TopTabs from '@n/TopTabs';
-import {BottomTabsParamsList, RootStackNavigation} from '@t/navigation';
+import {BottomTabsParamsList, BottomTabNavigation} from '@t/navigation';
 import IconFont from '@assets/iconfont';
 import colors from '@const/colors';
 import {useMount} from '@u/customHooks';
+import PlayBtn from '@n/components/PlayButton';
 const Tabs = createBottomTabNavigator<BottomTabsParamsList>();
 interface BottomProps {
-  navigation: RootStackNavigation;
+  navigation: BottomTabNavigation;
 }
 export default function BottomTabs(props: BottomProps) {
   const {navigation} = props;
@@ -44,6 +45,15 @@ export default function BottomTabs(props: BottomProps) {
             <IconFont name={'icon-listen'} color={color} />
           ),
         }}
+      />
+      <Tabs.Screen
+        name={'playButton'}
+        component={PlayBtn}
+        options={({navigation}) => ({
+          tabBarButton: () => {
+            return <PlayBtn onPress={() => navigation.navigate('Play')} />;
+          },
+        })}
       />
       <Tabs.Screen
         name={'found'}

@@ -1,9 +1,8 @@
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {Routes} from '@const/routes';
 export type ModelRootStackParamsList = {
   Root: undefined;
   Play: {
-    id: string;
+    id?: string;
   };
 };
 
@@ -22,12 +21,14 @@ export type ModalRootStackNavigation =
   NativeStackNavigationProp<ModelRootStackParamsList>;
 export type RootStackNavigation =
   NativeStackNavigationProp<RootStackParamsList>;
-type BottomTabsPage =
-  | Routes.HOME
-  | Routes.LISTEN
-  | Routes.FOUND
-  | Routes.ACCOUNT;
-export type BottomTabsParamsList = Record<BottomTabsPage, undefined>;
-
+export type BottomTabsParamsList = {
+  TopTabs: undefined;
+  listen: undefined;
+  playButton: undefined;
+  found: undefined;
+  account: undefined;
+};
+export type BottomTabNavigation =
+  NativeStackNavigationProp<BottomTabsParamsList>;
 type TopTabsPage = string;
 export type TopTabsParamsList = Record<TopTabsPage, {namespace: string}>;
