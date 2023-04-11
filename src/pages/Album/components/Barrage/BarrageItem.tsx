@@ -13,12 +13,12 @@ export interface IBarrage extends IMessage {
 interface IProps {
   item: IBarrage;
   animateEnd: (item: IBarrage) => void;
+  moveChange: (item: IBarrage) => void;
 }
 const BarrageItem = (props: IProps) => {
-  const {item, animateEnd} = props;
+  const {item, animateEnd, moveChange} = props;
   const translateX = new Animated.Value(0);
   useMount(() => {
-    console.log('动画');
     Animated.timing(translateX, {
       toValue: 10,
       duration: 5000,
@@ -26,15 +26,14 @@ const BarrageItem = (props: IProps) => {
       useNativeDriver: true,
     }).start(({finished}) => {
       if (finished) {
-        console.log(123);
         animateEnd(item);
       }
     });
-  });
-  translateX.addListener(({value}) => {
-    if (value > 4) {
-      item.isFree = true;
-    }
+    translateX.addListener(({value}) => {
+      if (value > 3) {
+        item.isFree = true;
+      }
+    });
   });
   const titleWidth = 15 * item.text.length;
   return (

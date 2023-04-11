@@ -1,20 +1,7 @@
-import {
-  Animated,
-  StyleSheet,
-  View,
-  Text,
-  Easing,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
-import {viewWidth} from '@u/tools';
+import {StyleSheet, View, StyleProp, ViewStyle} from 'react-native';
 import {useMount} from '@u/customHooks';
 import {useCallback, useEffect, useState} from 'react';
-import BarrageItem, {
-  IBarrage,
-  IMessage,
-} from '@p/Album/components/Barrage/BarrageItem';
-import Touchable from '@c/TouchableOpacity';
+import BarrageItem, {IBarrage} from '@p/Album/components/Barrage/BarrageItem';
 const data: string[] = [
   '最灵繁的人也看不见自己的背脊',
   '朝闻道，夕死可矣',
@@ -34,21 +21,19 @@ const randomText = () => data[random(data.length)];
 interface IProps {
   isOpen: boolean;
   style?: StyleProp<ViewStyle>;
-  maxTrack: number;
 }
 const Barrage = (props: IProps) => {
   console.log('Barrage重新渲染');
-  const {isOpen, style, maxTrack} = props;
+  const {isOpen, style} = props;
   const [barrages, setBarrages] = useState<IBarrage[][]>([]);
   const addBarrage = useCallback(() => {
-    console.log(12);
     const list = barrages.slice();
-    for (let i = 0; i < maxTrack; i++) {
-      if (!list[i]) {
+    for (let i = 0; i <= list.length; i++) {
+      if (!list[i] || list[i].length === 0) {
         list[i] = [];
       } else {
         if (!list[i][list[i].length - 1].isFree) {
-          continue;
+          continue; // 跳出本次循环继续下一次
         }
       }
       const temp = {
@@ -56,11 +41,12 @@ const Barrage = (props: IProps) => {
         text: randomText(),
         trackIndex: i,
       };
-      list[i].push(temp);
+      list[i].push(temp); // 每次循环只添加一次就立马退出
+      break;
     }
     console.log(list, '火箭');
     setBarrages(list);
-  }, [barrages, maxTrack]);
+  }, [barrages]);
   useMount(() => {
     if (isOpen) {
       addBarrage();
@@ -81,9 +67,32 @@ const Barrage = (props: IProps) => {
       return prevBarrages;
     });
   }, []);
+  const moveChange = useCallback((item: IBarrage) => {
+    const {trackIndex} = item;
+    setBarrages(prevBarrages => {
+      prevBarrages[trackIndex] = prevBarrages[trackIndex].map(barrage => {
+        if (barrage.id === item.id) {
+          return {
+            ...barrage,
+            isFree: true,
+          };
+        } else {
+          return barrage;
+        }
+      });
+      return prevBarrages;
+    });
+  }, []);
   const renderItem = (list: IBarrage[]) => {
     return list.map(item => {
-      return <BarrageItem key={item.id} item={item} animateEnd={animateEnd} />;
+      return (
+        <BarrageItem
+          key={item.id}
+          item={item}
+          animateEnd={animateEnd}
+          moveChange={moveChange}
+        />
+      );
     });
   };
   return (
