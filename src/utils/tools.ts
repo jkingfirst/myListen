@@ -1,5 +1,4 @@
 import {Dimensions} from 'react-native';
-import {RootStackNavigation} from '@t/navigation';
 import {NavigationState} from '@react-navigation/native';
 const {width: viewWidth, height: viewHeight} = Dimensions.get('window');
 // 更具百分比计算宽高

@@ -1,4 +1,8 @@
-import {NavigationContainer, RouteProp} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  NavigationState,
+  RouteProp,
+} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Album} from '@p/index';
 import {Play} from '@p/index';
@@ -8,6 +12,9 @@ import Category from '@p/Category/Category';
 import {Animated, StyleSheet} from 'react-native';
 import View = Animated.View;
 import IconFont from '@assets/iconfont';
+import GlobalPlayButton from '@n/components/GlobalPlayButton';
+import {useState} from 'react';
+import {getActiveRouteName} from '@u/tools';
 //最底层的路由，包括全屏路由
 const ModalStack = createNativeStackNavigator<ModelRootStackParamsList>();
 const Stack = createNativeStackNavigator<RootStackParamsList>();
@@ -59,33 +66,46 @@ function StackNavigator() {
 const BackImage = (props: {color: string}) => {
   return <IconFont name={'icon-down'} size={30} color={props.color} />;
 };
-export default function RootStack() {
+const ModalScreen = () => {
   return (
-    <NavigationContainer>
-      <ModalStack.Navigator
-        screenOptions={{
+    <ModalStack.Navigator
+      screenOptions={{
+        headerBackTitleVisible: false,
+      }}>
+      <ModalStack.Screen
+        name={'Root'}
+        component={StackNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <ModalStack.Screen
+        name={'Play'}
+        component={Play}
+        options={{
+          animation: 'slide_from_bottom',
+          headerTransparent: true,
+          headerTintColor: '#fff',
+          headerTitle: '',
+          headerBackTitle: '',
           headerBackTitleVisible: false,
-        }}>
-        <ModalStack.Screen
-          name={'Root'}
-          component={StackNavigator}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <ModalStack.Screen
-          name={'Play'}
-          component={Play}
-          options={{
-            animation: 'slide_from_bottom',
-            headerTransparent: true,
-            headerTintColor: '#fff',
-            headerTitle: '',
-            headerBackTitle: '',
-            headerBackTitleVisible: false,
-          }}
-        />
-      </ModalStack.Navigator>
+        }}
+      />
+    </ModalStack.Navigator>
+  );
+};
+export default function RootStack() {
+  const [routeName, setRouteName] = useState('');
+  const onStateChange = (state: NavigationState | undefined) => {
+    if (state) {
+      const name = getActiveRouteName(state);
+      setRouteName(name);
+    }
+  };
+  return (
+    <NavigationContainer onStateChange={onStateChange}>
+      <ModalScreen />
+      <GlobalPlayButton routeName={routeName} />
     </NavigationContainer>
   );
 }
