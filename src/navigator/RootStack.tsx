@@ -15,6 +15,7 @@ import IconFont from '@assets/iconfont';
 import GlobalPlayButton from '@n/components/GlobalPlayButton';
 import {useState} from 'react';
 import {getActiveRouteName} from '@u/tools';
+import Login from '@p/Login/Login';
 //最底层的路由，包括全屏路由
 const ModalStack = createNativeStackNavigator<ModelRootStackParamsList>();
 const Stack = createNativeStackNavigator<RootStackParamsList>();
@@ -87,6 +88,18 @@ const ModalScreen = () => {
           headerTransparent: true,
           headerTintColor: '#fff',
           headerTitle: '',
+          headerBackTitle: '',
+          headerBackTitleVisible: false,
+        }}
+      />
+      <ModalStack.Screen
+        name={'Login'}
+        component={Login}
+        options={{
+          animation: 'slide_from_bottom',
+          headerTransparent: true,
+          headerTintColor: '#fff',
+          headerTitle: '登录',
           headerBackTitle: '',
           headerBackTitleVisible: false,
         }}

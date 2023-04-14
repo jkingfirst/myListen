@@ -25,7 +25,6 @@ const GlobalPlayButton = (props: IProps) => {
   const [show, setShow] = useState(false);
   const navigation = useNavigation<GlobalScreenNavigationProp>();
   useEffect(() => {
-    console.log('加载----------');
     setShow(
       routeName !== 'Root' && routeName !== 'Play' && playStatus === 'playing',
     );

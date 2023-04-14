@@ -8,6 +8,7 @@ export type ModelRootStackParamsList = {
   Play: {
     id?: string;
   };
+  Login: undefined;
 };
 
 export type RootStackParamsList = {

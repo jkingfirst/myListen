@@ -10,6 +10,7 @@ export interface ResponseGenerator {
   request?: any;
   status?: number;
   statusText?: string;
+  msg?: string;
 }
 export interface Guess {
   id: string;
