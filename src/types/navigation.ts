@@ -1,8 +1,5 @@
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import type {CompositeNavigationProp} from '@react-navigation/native';
-import type {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import type {StackNavigationProp} from '@react-navigation/stack';
-
 export type ModelRootStackParamsList = {
   Root: undefined;
   Play: {

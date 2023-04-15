@@ -97,8 +97,7 @@ const ModalScreen = () => {
         component={Login}
         options={{
           animation: 'slide_from_bottom',
-          headerTransparent: true,
-          headerTintColor: '#fff',
+          headerTintColor: '#333',
           headerTitle: '登录',
           headerBackTitle: '',
           headerBackTitleVisible: false,

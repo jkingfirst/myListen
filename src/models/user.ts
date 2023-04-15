@@ -33,8 +33,9 @@ const userModel: UserModel = {
     },
   },
   effects: {
-    *login(_, {call, put}) {
-      const {data, status, msg}: ResponseGenerator = yield call(login);
+    *login({payload}, {call, put}) {
+      console.log(payload);
+      const {data, status, msg}: ResponseGenerator = yield call(login, payload);
       if (status === 100) {
         yield put({
           type: 'setState',
