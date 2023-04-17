@@ -4,6 +4,7 @@ import {
   RouteProp,
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {navigationRef} from '@u/rootNavigation';
 import {Album} from '@p/index';
 import {Play} from '@p/index';
 import BottomTabs from '@n/BottomTabs';
@@ -115,7 +116,7 @@ export default function RootStack() {
     }
   };
   return (
-    <NavigationContainer onStateChange={onStateChange}>
+    <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>
       <ModalScreen />
       <GlobalPlayButton routeName={routeName} />
     </NavigationContainer>

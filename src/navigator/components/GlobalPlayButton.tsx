@@ -6,7 +6,6 @@ import {viewWidth} from '@u/tools';
 import {useNavigation} from '@react-navigation/native';
 import {GlobalScreenNavigationProp} from '@t/navigation';
 import {useEffect, useState} from 'react';
-import {useMount} from '@u/customHooks';
 const mapStateToProps = ({player}: RootState) => {
   return {
     playStatus: player.playStatus,
