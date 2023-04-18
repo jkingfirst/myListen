@@ -1,9 +1,10 @@
-import {Model, Effect} from 'dva-core-ts';
+import {Model, Effect, SubscriptionsMapObject} from 'dva-core-ts';
 import {Reducer} from 'redux';
 import {IUser} from '@t/user';
 import {login, logout} from '@api/user';
 import {ResponseGenerator} from '@t/home';
-import {navigationRef} from '@u/rootNavigation';
+import {goBack} from '@u/rootNavigation';
+import storage, {load} from '@conf/storage';
 
 interface InitState {
   user: IUser | null;
@@ -18,7 +19,9 @@ interface UserModel extends Model {
   effects: {
     login: Effect;
     logout: Effect;
+    loadStorage: Effect;
   };
+  subscriptions: SubscriptionsMapObject;
 }
 const initState: InitState = {
   user: null,
@@ -47,9 +50,11 @@ const userModel: UserModel = {
             user: data,
           },
         });
-        if (navigationRef.isReady()) {
-          navigationRef.goBack();
-        }
+        storage.save({
+          key: 'user',
+          data,
+        });
+        goBack();
       } else {
         try {
           console.log(msg);
@@ -65,6 +70,23 @@ const userModel: UserModel = {
         payload: {
           user: null,
         },
+      });
+    },
+    *loadStorage(_, {call, put}) {
+      const user: ResponseGenerator = yield call(load, {key: 'user'});
+      console.log(user, '🚀🚀🚀🚀🚀🚀🚀🚀');
+      yield put({
+        type: 'setState',
+        payload: {
+          user,
+        },
+      });
+    },
+  },
+  subscriptions: {
+    setUp({dispatch}) {
+      dispatch({
+        type: 'loadStorage',
       });
     },
   },

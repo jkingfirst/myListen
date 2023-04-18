@@ -2,40 +2,40 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 import Touchable from '@c/TouchableOpacity';
 import defautAvator from '@assets/images/default_avatar.png';
 import colors from '@const/colors';
-import {connect, ConnectedProps} from 'react-redux';
-import {RootState} from '@m/index';
+import {useSelector, useDispatch} from 'react-redux';
 import {ModalRootStackNavigation} from '@t/navigation';
-const mapStateToProps = ({user}: RootState) => ({
-  user: user.user,
-});
-const connector = connect(mapStateToProps);
-type ModelState = ConnectedProps<typeof connector>;
-interface IProps extends ModelState {
+import {RootState} from '@m/index';
+import Authenticate from '@p/Authenticate';
+interface IProps {
   navigation: ModalRootStackNavigation;
 }
 const Account = (props: IProps) => {
-  const {user, navigation} = props;
-  const handleToLogin = () => {
-    navigation.navigate('Login');
+  const {user} = useSelector(({user}: RootState) => user);
+  const dispatch = useDispatch();
+  const logout = () => {
+    dispatch({
+      type: 'user/logout',
+    });
   };
   return (
     <View>
       <View style={styles.container}>
-        {user ? (
-          <View>
-            <Text>用户</Text>
-          </View>
-        ) : (
+        <Authenticate>
           <View style={styles.container}>
-            <Image source={defautAvator} style={styles.avatar} />
+            <Image
+              source={{
+                uri: user?.avatar,
+              }}
+              style={styles.avatar}
+            />
             <View style={styles.loginContainer}>
-              <Touchable style={styles.loginBtn} onPress={handleToLogin}>
-                <Text style={styles.loginBtnText}>立即登录</Text>
+              <Text style={styles.subtitle}>{user && user?.name}</Text>
+              <Touchable style={styles.loginBtn} onPress={logout}>
+                <Text style={styles.loginBtnText}>退出登录</Text>
               </Touchable>
-              <Text style={styles.subtitle}>登录后同步所有记录</Text>
             </View>
           </View>
-        )}
+        </Authenticate>
       </View>
     </View>
   );

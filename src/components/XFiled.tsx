@@ -14,7 +14,6 @@ const XFiled = (props: IProps) => {
         value={form.values[field.name]}
         onChangeText={form.handleChange(field.name)}
         onBlur={form.handleBlur(field.name)}
-        secureTextEntry={true}
       />
       <View>
         <Text style={styles.error}>

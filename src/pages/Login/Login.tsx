@@ -35,12 +35,6 @@ const Login = (props: LoginProps) => {
       payload: values,
     });
   };
-  const goBack = () => {
-    console.log(navigationRef.isReady(), '回退🚀');
-    if (!navigationRef.isReady()) {
-      navigationRef.goBack();
-    }
-  };
   return (
     <ScrollView keyboardShouldPersistTaps={'handled'}>
       <Text style={styles.logo}>听书</Text>
@@ -61,6 +55,7 @@ const Login = (props: LoginProps) => {
                 name={'password'}
                 component={XFiled}
                 placeholder={'输入登录密码'}
+                secureTextEntry={true}
               />
               <Touchable onPress={handleSubmit} style={styles.loginBtn}>
                 <Text style={styles.loginText}>登录</Text>
@@ -69,9 +64,6 @@ const Login = (props: LoginProps) => {
           );
         }}
       </Formik>
-      <Touchable onPress={goBack}>
-        <Text>阿牛</Text>
-      </Touchable>
     </ScrollView>
   );
 };
