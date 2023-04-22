@@ -4,7 +4,8 @@ declare module 'dva-model-extend' {
   export default function modelExtend(...models: Model[]): Model;
 }
 declare module 'react-native-video' {
-  import React from 'react';
-  export type Video = React.ElementType;
+  import {FunctionComponent} from 'react';
+  const Video: FunctionComponent<T>;
+  export default Video;
 }
 declare module '*.png';
